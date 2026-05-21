@@ -1,26 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Press+Start+2P&family=Rajdhani:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0b0f10;
+  --foreground: #f3f4f6;
+
+  /* Custom palette colors */
+  --emerald-green: #50c878;
+  --deep-green: #2e8b57;
+  --obsidian-black: #0b0f10;
+  --diamond-cyan: #7df9ff;
+  --purple-glow: #9d4edd;
+  --gold: #ffd700;
+  
+  --font-sans: 'Inter', sans-serif;
+  --font-display: 'Rajdhani', sans-serif;
+  --font-pixel: 'Press Start 2P', monospace;
+  --font-mono: 'Orbitron', monospace;
 }
 
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-emerald: var(--emerald-green);
+  --color-deep-green: var(--deep-green);
+  --color-obsidian: var(--obsidian-black);
+  --color-cyan-glow: var(--diamond-cyan);
+  --color-purple-glow: var(--purple-glow);
+  --color-gold-glow: var(--gold);
+  
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --font-pixel: var(--font-pixel);
+  --font-mono: var(--font-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(11, 15, 16, 0.9);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--deep-green);
+  border: 2px solid var(--obsidian-black);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--emerald-green);
 }
 
+/* Smooth Scrolling */
+html.lenis {
+  height: auto;
+}
+.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+/* Global Voxel Background styling */
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Voxel double borders */
+.voxel-border {
+  position: relative;
+  border: 4px solid #1c272a;
+  background: rgba(11, 15, 16, 0.75);
+}
+
+.voxel-border::before {
+  content: '';
+  position: absolute;
+  top: -4px; right: -4px; bottom: -4px; left: -4px;
+  border: 2px solid #50c878;
+  pointer-events: none;
+  opacity: 0.15;
+  transition: opacity 0.3s ease;
+}
+
+.voxel-border:hover::before {
+  opacity: 0.8;
+  border-color: var(--diamond-cyan);
+}
+
+/* Hologram scanlines */
+.hologram-screen {
+  position: relative;
+  overflow: hidden;
+}
+.hologram-screen::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 10;
+  background-size: 100% 4px, 6px 100%;
+  pointer-events: none;
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background: rgba(11, 15, 16, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Glow highlights */
+.cyan-glow-text {
+  text-shadow: 0 0 10px rgba(125, 249, 255, 0.5), 0 0 20px rgba(125, 249, 255, 0.2);
+}
+.emerald-glow-text {
+  text-shadow: 0 0 10px rgba(80, 200, 120, 0.5), 0 0 20px rgba(80, 200, 120, 0.2);
+}
+.purple-glow-text {
+  text-shadow: 0 0 10px rgba(157, 78, 221, 0.5), 0 0 20px rgba(157, 78, 221, 0.2);
+}
+
+/* Minecraft block corner style */
+.voxel-clip {
+  clip-path: polygon(
+    0px 8px, 4px 8px, 4px 4px, 8px 4px, 8px 0px,
+    calc(100% - 8px) 0px, calc(100% - 8px) 4px, calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px,
+    100% calc(100% - 8px), calc(100% - 4px) calc(100% - 8px), calc(100% - 4px) calc(100% - 4px), calc(100% - 8px) calc(100% - 4px), calc(100% - 8px) 100%,
+    8px 100%, 8px calc(100% - 4px), 4px calc(100% - 4px), 4px calc(100% - 8px), 0px calc(100% - 8px)
+  );
+}
+
+/* Voxel inner shadow and border styling */
+.minecraft-btn {
+  font-family: var(--font-pixel);
+  text-shadow: 2px 2px 0px #000;
+  border-width: 4px;
+  border-style: solid;
+  border-color: #555 #000 #000 #555;
+  background-color: #7f7f7f;
+  box-shadow: inset -4px -4px 0px #3f3f3f, inset 4px 4px 0px #fff;
+  transition: all 0.1s ease;
+}
+
+.minecraft-btn:active {
+  border-color: #000 #555 #555 #000;
+  box-shadow: inset 4px 4px 0px #3f3f3f, inset -4px -4px 0px #fff;
+  padding-top: 6px;
+  padding-bottom: 2px;
+}
+
+.minecraft-panel {
+  border: 4px solid #3c3c3c;
+  background-color: #c6c6c6;
+  box-shadow: inset -4px -4px 0px #555, inset 4px 4px 0px #fff;
+}
+
+.dark-minecraft-panel {
+  border: 4px solid #121212;
+  background-color: #2e2e2e;
+  box-shadow: inset -4px -4px 0px #1a1a1a, inset 4px 4px 0px #4d4d4d;
+}
+
+/* Redstone particle spark keyframes */
+@keyframes spark {
+  0% { transform: scale(0.5); opacity: 1; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+.redstone-spark {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #ff2200;
+  box-shadow: 0 0 4px #ff5533;
+  pointer-events: none;
+  animation: spark 0.6s ease-out forwards;
+}
+
+/* Hologram scan animate */
+@keyframes scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+.scan-line {
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(to bottom, rgba(125, 249, 255, 0) 0%, rgba(125, 249, 255, 0.15) 50%, rgba(125, 249, 255, 0) 100%);
+  animation: scan 4s linear infinite;
+  pointer-events: none;
 }
