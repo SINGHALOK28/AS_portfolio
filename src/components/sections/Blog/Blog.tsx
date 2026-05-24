@@ -84,9 +84,11 @@ export default function Blog() {
         {/* Blogs grid list */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {filteredBlogs.map((blog, idx) => (
-            <div
+            <motion.div
               key={idx}
-              className="relative group border border-purple-glow/20 hover:border-purple-glow bg-[#0a0f11]/60 h-[260px] rounded-2xl overflow-hidden flex voxel-clip shadow-lg hover:shadow-[0_0_20px_rgba(157,78,221,0.25)] transition-all duration-500"
+              whileHover="hover"
+              initial="initial"
+              className="relative group border border-purple-glow/20 hover:border-purple-glow bg-[#0a0f11]/60 h-[260px] rounded-2xl overflow-hidden flex voxel-clip shadow-lg hover:shadow-[0_0_20px_rgba(157,78,221,0.25)] transition-all duration-500 cursor-pointer"
             >
               {/* Purple glowing sparks inside card background */}
               <div 
@@ -146,10 +148,12 @@ export default function Blog() {
 
                 {/* Animated Cover Overlay (Fades/slides to the right when hovered) */}
                 <motion.div
-                  initial={{ x: 0 }}
-                  whileHover={{ x: "90%" }}
-                  transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
-                  className="absolute inset-y-0 left-16 right-0 bg-gradient-to-r from-[#2c1243] to-[#1f0931] border-l border-black z-25 flex flex-col items-center justify-center text-center p-8 select-none pointer-events-none md:pointer-events-auto"
+                  variants={{
+                    initial: { x: 0 },
+                    hover: { x: "100%" }
+                  }}
+                  transition={{ type: "spring", damping: 25, stiffness: 120, mass: 1.2 }}
+                  className="absolute inset-y-0 left-16 right-0 bg-gradient-to-r from-[#2c1243] to-[#1f0931] border-l border-black z-25 flex flex-col items-center justify-center text-center p-8 select-none pointer-events-none"
                 >
                   <BookOpen className="w-12 h-12 text-gold-glow drop-shadow-[0_0_10px_rgba(255,215,0,0.5)] mb-3" />
                   <h4 className="font-pixel text-[10px] text-white max-w-xs leading-relaxed uppercase">
@@ -161,7 +165,7 @@ export default function Blog() {
                 </motion.div>
 
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 

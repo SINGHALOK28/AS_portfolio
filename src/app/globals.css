@@ -5,7 +5,7 @@
   --background: #0b0f10;
   --foreground: #f3f4f6;
 
-  /* Custom palette colors */
+  /* Core Defaults (Emerald Theme) */
   --emerald-green: #50c878;
   --deep-green: #2e8b57;
   --obsidian-black: #0b0f10;
@@ -17,6 +17,31 @@
   --font-display: 'Rajdhani', sans-serif;
   --font-pixel: 'Press Start 2P', monospace;
   --font-mono: 'Orbitron', monospace;
+}
+
+[data-theme="emerald"] {
+  --emerald-green: #50c878;
+  --deep-green: #2e8b57;
+}
+
+[data-theme="diamond"] {
+  --emerald-green: #7df9ff;
+  --deep-green: #008b8b;
+}
+
+[data-theme="redstone"] {
+  --emerald-green: #ff2200;
+  --deep-green: #b30000;
+}
+
+[data-theme="amethyst"] {
+  --emerald-green: #c77dff;
+  --deep-green: #9d4edd;
+}
+
+[data-theme="gold"] {
+  --emerald-green: #ffd700;
+  --deep-green: #daa520;
 }
 
 @theme {
@@ -68,6 +93,11 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
   overflow-x: hidden;
+  cursor: url('/error_cursor.svg') 12 12, auto;
+}
+
+button, a, select, input, [role="button"], .cursor-pointer {
+  cursor: url('/error_cursor.svg') 12 12, pointer !important;
 }
 
 /* Voxel double borders */
@@ -110,21 +140,30 @@ body {
 
 /* Glassmorphism utility */
 .glass-panel {
-  background: rgba(11, 15, 16, 0.65);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(11, 15, 16, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05);
 }
 
-/* Glow highlights */
+/* Animated Glow highlights */
+@keyframes pulse-glow {
+  0%, 100% { text-shadow: 0 0 10px var(--glow-color, rgba(125, 249, 255, 0.5)), 0 0 20px var(--glow-color, rgba(125, 249, 255, 0.2)); }
+  50% { text-shadow: 0 0 15px var(--glow-color, rgba(125, 249, 255, 0.7)), 0 0 30px var(--glow-color, rgba(125, 249, 255, 0.4)); }
+}
+
 .cyan-glow-text {
-  text-shadow: 0 0 10px rgba(125, 249, 255, 0.5), 0 0 20px rgba(125, 249, 255, 0.2);
+  --glow-color: rgba(125, 249, 255, 0.5);
+  animation: pulse-glow 3s ease-in-out infinite;
 }
 .emerald-glow-text {
-  text-shadow: 0 0 10px rgba(80, 200, 120, 0.5), 0 0 20px rgba(80, 200, 120, 0.2);
+  --glow-color: rgba(80, 200, 120, 0.5);
+  animation: pulse-glow 3s ease-in-out infinite;
 }
 .purple-glow-text {
-  text-shadow: 0 0 10px rgba(157, 78, 221, 0.5), 0 0 20px rgba(157, 78, 221, 0.2);
+  --glow-color: rgba(157, 78, 221, 0.5);
+  animation: pulse-glow 3s ease-in-out infinite;
 }
 
 /* Minecraft block corner style */
@@ -194,4 +233,29 @@ body {
   background: linear-gradient(to bottom, rgba(125, 249, 255, 0) 0%, rgba(125, 249, 255, 0.15) 50%, rgba(125, 249, 255, 0) 100%);
   animation: scan 4s linear infinite;
   pointer-events: none;
+}
+
+
+/* 3D Transform Utilities for Flip Cards */
+@layer utilities {
+  .perspective-\[1200px\] {
+    perspective: 1200px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+}
+
+/* Elite Smooth Hover Physics */
+@layer base {
+  .transition-all, .transition, .transition-colors, .transition-opacity, .transition-transform {
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1) !important;
+    transition-duration: 0.6s !important;
+  }
 }

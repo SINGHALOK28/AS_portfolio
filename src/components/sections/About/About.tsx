@@ -3,9 +3,12 @@
 import React, { useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { usePortfolioConfig } from "@/context/PortfolioConfigContext";
+import { fetchAllStats, FullCodingStats } from "@/utils/statsFetcher";
 import Card from "@/components/ui/Card";
 import { Shield, Swords, Trophy, Activity, Award, CheckCircle } from "lucide-react";
+import { Github, Linkedin } from "@/components/ui/Icons";
 import { playClickSound, playXpSound } from "@/utils/soundManager";
+import MiniVoxelAvatar from "./MiniVoxelAvatar";
 
 // Animated Counter helper
 function AnimatedNumber({ value, duration = 1.5 }: { value: number; duration?: number }) {
@@ -43,6 +46,31 @@ export default function About() {
   const containerRef = React.useRef(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
   const [xpSoundPlayed, setXpSoundPlayed] = useState(false);
+  
+  const [statsData, setStatsData] = useState<FullCodingStats | null>(null);
+
+  useEffect(() => {
+    async function loadStats() {
+      try {
+        const data = await fetchAllStats(config);
+        setStatsData(data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    loadStats();
+  }, [config]);
+
+  const totalSolved = statsData 
+    ? (statsData.leetcode.solved === 184 ? 0 : statsData.leetcode.solved) + 
+      (statsData.codechef.solvedCount === 54 ? 0 : statsData.codechef.solvedCount)
+    : 0;
+    
+  const totalCommits = statsData ? statsData.github.commitsThisYear : 1540;
+  
+  const latestCGPA = config.education && config.education.length > 0 
+    ? config.education[0].cgpa 
+    : "9.32 CGPA";
 
   // Play a system notification sound when the section loads
   useEffect(() => {
@@ -55,10 +83,10 @@ export default function About() {
   }, [isInView, xpSoundPlayed]);
 
   const journeySteps = [
-    { year: "2022", title: "Core Foundation Setup", desc: "Entered Computer Science Engineering. Mastered C++, OOPs, and algorithmic foundations." },
-    { year: "2024", title: "Data Specialization", desc: "Shifted focus to Data Science, Probability, Statistics, and Data Science libraries in Python." },
-    { year: "2025", title: "Research & Hackathons", desc: "Developed machine learning projects, co-authored bio-informatics research, and won Smart India Hackathon." },
-    { year: "2026", title: "Production Deployment", desc: "Deploying scalable models, wrapping pipelines in Docker/AWS, and entering industry role." }
+    { year: "2023", title: "Software Engineering Foundations", desc: "Entered Computer Science Engineering. Mastered C++, OOPs, and algorithmic foundations." },
+    { year: "2024", title: "Data Science Specialization", desc: "Shifted focus to Data Science, Probability, Statistics, and Data Science libraries in Python." },
+    { year: "2025", title: "Research & Hackathons", desc: "Developed machine learning projects and co-authored bio-informatics research." },
+    { year: "2026", title: "Production Deployment", desc: "Deploying scalable models and apps, utilizing Git, Vercel, and Streamlit for seamless pipelines, and entering industry role." }
   ];
 
   return (
@@ -91,22 +119,68 @@ export default function About() {
               {/* Player Details Header */}
               <div className="flex items-center justify-between border-b border-emerald/10 pb-4 mb-6">
                 <div className="flex items-center space-x-4">
-                  {/* Custom CSS Avatar grid */}
-                  <div className="w-14 h-14 bg-[#12181a] border-2 border-emerald rounded-lg flex items-center justify-center p-1.5 voxel-clip">
-                    <div className="grid grid-cols-3 gap-0.5 w-full h-full">
-                      {[...Array(9)].map((_, i) => (
-                        <div 
-                          key={i} 
-                          className={`w-full h-full ${
-                            i === 4 ? "bg-cyan-glow" : i % 2 === 0 ? "bg-emerald" : "bg-deep-green"
-                          } rounded-sm`} 
+                  {/* 3D Voxel Avatar */}
+                  <motion.div 
+                    whileHover={{ scale: 1.15, boxShadow: "0 0 30px rgba(80,200,120,0.7)", borderColor: "rgba(80,200,120,0.9)" }}
+                    transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                    className="w-20 h-20 bg-[#070b0c] border border-emerald/30 rounded-lg flex items-center justify-center relative overflow-hidden voxel-clip shadow-[0_0_15px_rgba(80,200,120,0.15)] shrink-0 z-20 cursor-pointer"
+                  >
+                    <div className="absolute inset-0 z-10 pointer-events-none" style={{
+                      boxShadow: 'inset 0 0 6px rgba(0,0,0,0.4)'
+                    }} />
+                    
+                    {/* Multi Glow Point Blinking Effect */}
+                    <div className="absolute inset-0 pointer-events-none z-15">
+                      {[
+                        { top: '15%', left: '75%', delay: 0, dur: 2 },
+                        { top: '65%', left: '15%', delay: 0.8, dur: 1.5 },
+                        { top: '80%', left: '80%', delay: 1.5, dur: 2.5 },
+                        { top: '25%', left: '20%', delay: 0.4, dur: 1.8 },
+                        { top: '50%', left: '85%', delay: 1.2, dur: 2.2 },
+                      ].map((pos, i) => (
+                        <motion.div
+                          key={`glow-${i}`}
+                          className={`absolute w-1 h-1 rounded-full ${i % 2 === 0 ? 'bg-emerald shadow-[0_0_8px_#50c878]' : 'bg-cyan-glow shadow-[0_0_8px_#00fff0]'}`}
+                          animate={{
+                            opacity: [0, 1, 0],
+                            scale: [0.5, 1.5, 0.5],
+                          }}
+                          transition={{
+                            duration: pos.dur,
+                            repeat: Infinity,
+                            delay: pos.delay,
+                            ease: "easeInOut"
+                          }}
+                          style={{ top: pos.top, left: pos.left }}
                         />
                       ))}
                     </div>
-                  </div>
+
+                    <MiniVoxelAvatar isStatic={true} />
+                  </motion.div>
                   <div>
                     <h3 className="font-mono text-xl font-bold tracking-wide">{config.profile.name}</h3>
-                    <p className="font-mono text-xs text-emerald uppercase tracking-wider">Specialization: Data Science</p>
+                    <p className="font-mono text-xs text-emerald uppercase tracking-wider mb-1.5">Specialization: Data Science</p>
+                    <div className="flex items-center gap-3">
+                      <a 
+                        href={`https://github.com/${config.usernames.github}`} 
+                        target="_blank" 
+                        rel="noreferrer" 
+                        className="text-gray-500 hover:text-emerald transition-colors"
+                        title="GitHub"
+                      >
+                        <Github className="w-4 h-4" />
+                      </a>
+                      <a 
+                        href={`https://www.linkedin.com/in/${config.usernames.linkedin}`} 
+                        target="_blank" 
+                        rel="noreferrer" 
+                        className="text-gray-500 hover:text-emerald transition-colors"
+                        title="LinkedIn"
+                      >
+                        <Linkedin className="w-4 h-4" />
+                      </a>
+                    </div>
                   </div>
                 </div>
                 <div className="text-right">
@@ -149,13 +223,13 @@ export default function About() {
                   </div>
                   <div>
                     <div className="flex justify-between text-xs mb-1">
-                      <span className="text-gray-400">Pipeline Deployment (MLOps)</span>
-                      <span className="text-purple-glow">80% Reliability</span>
+                      <span className="text-gray-400">Deployment</span>
+                      <span className="text-purple-glow">60%</span>
                     </div>
                     <div className="w-full h-2.5 bg-obsidian border border-[#304447] p-0.5 rounded-sm overflow-hidden">
                       <motion.div 
                         initial={{ width: 0 }}
-                        animate={isInView ? { width: "80%" } : {}}
+                        animate={isInView ? { width: "60%" } : {}}
                         transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
                         className="h-full bg-purple-glow shadow-[0_0_6px_rgba(186,85,211,0.6)]"
                       />
@@ -167,22 +241,22 @@ export default function About() {
                   <div className="flex items-center space-x-3">
                     <Swords className="w-5 h-5 text-emerald" />
                     <div>
-                      <span className="text-xs text-gray-500 block uppercase font-pixel text-[8px]">Algorithmic Thinking</span>
-                      <span className="text-sm font-bold text-white">1000+ Solved</span>
+                      <span className="text-xs text-gray-500 block uppercase font-pixel text-[8px]">LeetCode & CodeChef</span>
+                      <span className="text-sm font-bold text-white">{totalSolved} Solved</span>
                     </div>
                   </div>
                   <div className="flex items-center space-x-3">
                     <Shield className="w-5 h-5 text-cyan-glow" />
                     <div>
                       <span className="text-xs text-gray-500 block uppercase font-pixel text-[8px]">Model Deployment</span>
-                      <span className="text-sm font-bold text-white font-mono">AWS & Docker</span>
+                      <span className="text-sm font-bold text-white font-mono">Git, Vercel, Streamlit</span>
                     </div>
                   </div>
                   <div className="flex items-center space-x-3">
                     <Trophy className="w-5 h-5 text-gold-glow" />
                     <div>
                       <span className="text-xs text-gray-500 block uppercase font-pixel text-[8px]">Academic Excellence</span>
-                      <span className="text-sm font-bold text-white">9.32 CGPA</span>
+                      <span className="text-sm font-bold text-white">{latestCGPA}</span>
                     </div>
                   </div>
                   <div className="flex items-center space-x-3">
@@ -207,14 +281,14 @@ export default function About() {
               
               <Card rarity="rare" className="p-4 flex flex-col justify-center items-center text-center">
                 <span className="font-mono text-3xl font-extrabold text-cyan-glow">
-                  <AnimatedNumber value={1434} />
+                  <AnimatedNumber value={totalSolved} />
                 </span>
-                <span className="font-mono text-[10px] text-gray-400 uppercase mt-1 tracking-wider">DSA SOLVED</span>
+                <span className="font-mono text-[10px] text-gray-400 uppercase mt-1 tracking-wider text-[8px]">LC & CC SOLVED</span>
               </Card>
 
               <Card rarity="legendary" className="p-4 flex flex-col justify-center items-center text-center col-span-2 md:col-span-1">
                 <span className="font-mono text-3xl font-extrabold text-gold-glow">
-                  <AnimatedNumber value={1540} />
+                  <AnimatedNumber value={totalCommits} />
                 </span>
                 <span className="font-mono text-[10px] text-gray-400 uppercase mt-1 tracking-wider">GIT COMMITS</span>
               </Card>

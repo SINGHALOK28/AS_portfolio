@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePortfolioConfig } from "@/context/PortfolioConfigContext";
-import { playClickSound, toggleSound, getSoundStatus } from "@/utils/soundManager";
-import { Menu, X, Volume2, VolumeX } from "lucide-react";
+import { playClickSound } from "@/utils/soundManager";
+import { Menu, X, Palette } from "lucide-react";
 import { cn } from "@/utils/cn";
 
 const NAV_ITEMS = [
@@ -23,16 +23,19 @@ const NAV_ITEMS = [
 ];
 
 export default function Navbar() {
-  const { config } = usePortfolioConfig();
+  const { config, theme, setTheme } = usePortfolioConfig();
   const [activeSection, setActiveSection] = useState("about");
   const [isScrolled, setIsScrolled] = useState(false);
-  const [soundOn, setSoundOn] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Sync sound status on load
-  useEffect(() => {
-    setSoundOn(getSoundStatus());
-  }, []);
+  const THEMES = ["emerald", "diamond", "redstone", "amethyst", "gold"];
+
+  const handleThemeToggle = () => {
+    playClickSound();
+    const currentIndex = THEMES.indexOf(theme || "emerald");
+    const nextIndex = (currentIndex + 1) % THEMES.length;
+    setTheme(THEMES[nextIndex]);
+  };
 
   // Handle scroll spy for background styling
   useEffect(() => {
@@ -82,32 +85,28 @@ export default function Navbar() {
     };
   }, []);
 
-  // Smooth scroll trigger
+  // Smooth scroll trigger with elegant offset
   const handleNavClick = (id: string) => {
     playClickSound();
     setMobileMenuOpen(false);
     
+    // Offset for the fixed Navbar (approx 80px)
+    const SCROLL_OFFSET = -80;
+    
     // Check for globally exposed Lenis instance
     const lenis = (window as any).lenis;
     if (lenis) {
-      lenis.scrollTo(`#${id}`);
+      lenis.scrollTo(`#${id}`, { offset: SCROLL_OFFSET });
     } else {
       const el = document.getElementById(id);
       if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
+        const y = el.getBoundingClientRect().top + window.scrollY + SCROLL_OFFSET;
+        window.scrollTo({ top: y, behavior: "smooth" });
       }
     }
   };
 
-  // Toggle local Audio Context node
-  const handleToggleSound = () => {
-    const nextState = toggleSound();
-    setSoundOn(nextState);
-    if (nextState) {
-      // Play a quick click chime as feedback
-      setTimeout(() => playClickSound(), 50);
-    }
-  };
+
 
   return (
     <>
@@ -160,18 +159,13 @@ export default function Navbar() {
 
           {/* Sound Control + Hamburger */}
           <div className="flex items-center space-x-3">
-            {/* Audio Oscillator Toggle */}
+            {/* Theme Toggle Button */}
             <button
-              onClick={handleToggleSound}
-              className={cn(
-                "p-2 rounded-lg border border-[#232f32] bg-[#0c1214] transition-colors select-none",
-                soundOn
-                  ? "text-emerald border-emerald/40 hover:bg-emerald/5"
-                  : "text-gray-500 hover:text-gray-300 hover:border-gray-700"
-              )}
-              title={soundOn ? "Mute Synthesizer Chimes" : "Enable Sound Effects"}
+              onClick={handleThemeToggle}
+              className="p-2 rounded-lg border border-[#232f32] bg-[#0c1214] transition-colors select-none text-emerald hover:text-cyan-glow border-emerald/40 hover:bg-emerald/5"
+              title="Toggle Color Theme"
             >
-              {soundOn ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+              <Palette className="w-4 h-4" />
             </button>
 
             {/* Mobile Menu Toggle Button — shown when desktop nav is hidden */}

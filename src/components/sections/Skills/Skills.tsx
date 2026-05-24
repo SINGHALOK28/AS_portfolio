@@ -5,7 +5,42 @@ import { motion, AnimatePresence } from "framer-motion";
 import { usePortfolioConfig } from "@/context/PortfolioConfigContext";
 import Card from "@/components/ui/Card";
 import { playClickSound, playXpSound, playSparkSound } from "@/utils/soundManager";
-import { Hammer, RotateCcw, HelpCircle } from "lucide-react";
+import { Hammer, RotateCcw, HelpCircle, Wrench } from "lucide-react";
+import { 
+  SiPython, SiPostgresql, SiCplusplus, SiC, 
+  SiPandas, SiNumpy, SiScikitlearn, SiSpacy, 
+  SiFlask, SiGit, SiLinux, SiGooglecloud,
+  SiHuggingface, SiMysql, SiHtml5, SiJavascript,
+  SiGooglechrome, SiStreamlit, SiPlotly
+} from "react-icons/si";
+import { FaJava } from "react-icons/fa";
+import { VscAzureDevops } from "react-icons/vsc";
+import { IoLogoTableau } from "react-icons/io5";
+
+const getSkillIcon = (iconName: string) => {
+  switch (iconName) {
+    case "python": return <SiPython className="w-7 h-7 text-sky-400" />;
+    case "database": return <SiPostgresql className="w-7 h-7 text-blue-400" />;
+    case "cpp": return <SiCplusplus className="w-7 h-7 text-blue-500" />;
+    case "c": return <SiC className="w-7 h-7 text-blue-300" />;
+    case "java": return <FaJava className="w-7 h-7 text-red-400" />;
+    case "pandas": return <SiPandas className="w-7 h-7 text-purple-400" />;
+    case "numpy": return <SiNumpy className="w-7 h-7 text-teal-400" />;
+    case "chart": return <SiPlotly className="w-7 h-7 text-indigo-400" />;
+    case "scikit": return <SiScikitlearn className="w-7 h-7 text-orange-400" />;
+    case "nlp": return <SiSpacy className="w-7 h-7 text-cyan-400" />;
+    case "transformer": return <SiHuggingface className="w-7 h-7 text-yellow-400" />;
+    case "mysql": return <SiMysql className="w-7 h-7 text-blue-300" />;
+    case "web": return <SiHtml5 className="w-7 h-7 text-orange-500" />;
+    case "javascript": return <SiJavascript className="w-7 h-7 text-yellow-300" />;
+    case "tableau": return <IoLogoTableau className="w-7 h-7 text-blue-500" />;
+    case "git": return <SiGit className="w-7 h-7 text-rose-400" />;
+    case "chrome": return <SiGooglechrome className="w-7 h-7 text-green-400" />;
+    case "azure": return <VscAzureDevops className="w-7 h-7 text-blue-500" />;
+    case "streamlit": return <SiStreamlit className="w-7 h-7 text-red-500" />;
+    default: return <Wrench className="w-7 h-7 text-gray-300" />;
+  }
+};
 
 // Recipes mapping (Item names to Result)
 const RECIPES = [
@@ -22,7 +57,7 @@ const RECIPES = [
     result: { name: "Data Science Predictive Engine", desc: "High-performance data analysis and predictive pipeline.", status: "COMPILE STATUS: SYNCED", rarity: "legendary" }
   },
   {
-    ingredients: ["Git and GitHub", "Chrome Extension", "JavaScript"],
+    ingredients: ["Git and GitHub", "Chrome Extension", "JS"],
     result: { name: "OSINT Threat Detection System", desc: "Real-time browser security extension and threat analyzer.", status: "COMPILE STATUS: SYNCED", rarity: "rare" }
   }
 ];
@@ -37,9 +72,38 @@ export default function Skills() {
   const categories = config.skills.categories;
   const skills = config.skills.items;
 
-  const filteredSkills = activeCategory === "all"
-    ? skills
-    : skills.filter(s => s.category === activeCategory);
+  const [shuffledSkills, setShuffledSkills] = useState(skills);
+
+  // Update base items when category changes
+  React.useEffect(() => {
+    const base = activeCategory === "all" ? skills : skills.filter(s => s.category === activeCategory);
+    setShuffledSkills(base);
+  }, [activeCategory, skills]);
+
+  // Randomly swap multiple skills every 3.5 seconds to create a dynamic living grid
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setShuffledSkills(prev => {
+        if (prev.length < 4) return prev;
+        const next = [...prev];
+        
+        // Perform 3-4 simultaneous swaps
+        const swapCount = Math.floor(Math.random() * 2) + 3; 
+        for (let i = 0; i < swapCount; i++) {
+          const idx1 = Math.floor(Math.random() * next.length);
+          let idx2 = Math.floor(Math.random() * next.length);
+          while(idx1 === idx2) idx2 = Math.floor(Math.random() * next.length);
+          
+          const temp = next[idx1];
+          next[idx1] = next[idx2];
+          next[idx2] = temp;
+        }
+        
+        return next;
+      });
+    }, 6000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Click skill from inventory to place in grid
   const handleInventoryItemClick = (skillName: string) => {
@@ -179,31 +243,57 @@ export default function Skills() {
             {/* Inventory Slot grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               <AnimatePresence mode="popLayout">
-                {filteredSkills.map((skill) => {
+                {shuffledSkills.map((skill) => {
                   const inGrid = craftingGrid.includes(skill.name);
                   return (
                     <motion.div
                       key={skill.name}
                       layout
                       initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
+                      animate={
+                        inGrid 
+                        ? { opacity: 0.4, scale: 1, y: 0, x: 0, boxShadow: "none" }
+                        : { 
+                            opacity: [0.7, 1, 0.7], 
+                            scale: 1,
+                            y: [0, -4, 0],
+                            x: 0,
+                            boxShadow: [
+                              "0px 0px 0px rgba(80,200,120,0)", 
+                              "0px 0px 18px rgba(80,200,120,0.5)", // emerald
+                              "0px 0px 18px rgba(125,249,255,0.5)", // cyan
+                              "0px 0px 18px rgba(157,78,221,0.5)", // purple
+                              "0px 0px 0px rgba(80,200,120,0)"
+                            ]
+                          }
+                      }
                       exit={{ opacity: 0, scale: 0.9 }}
-                      transition={{ duration: 0.2 }}
+                      transition={
+                        inGrid 
+                        ? { duration: 0.2 } 
+                        : { 
+                            y: { repeat: Infinity, duration: 4, ease: "easeInOut" },
+                            boxShadow: { repeat: Infinity, duration: 6, ease: "linear" },
+                            opacity: { repeat: Infinity, duration: 3, ease: "easeInOut" },
+                            layout: { type: "spring", damping: 18, stiffness: 20 },
+                            default: { duration: 0.3 }
+                          }
+                      }
                       onClick={() => handleInventoryItemClick(skill.name)}
-                      className={`relative group border p-4 bg-[#0a0f11] rounded-xl flex flex-col justify-between h-32 select-none cursor-pointer transition-all duration-200 ${
+                      className={`relative group border p-4 bg-[#0a0f11] rounded-xl flex flex-col justify-between h-32 select-none cursor-pointer transition-colors duration-200 ${
                         inGrid 
                           ? "border-emerald/10 bg-emerald/[0.02] opacity-40 cursor-default" 
                           : "border-emerald/20 hover:border-emerald hover:shadow-[0_0_12px_rgba(80,200,120,0.15)]"
                       }`}
                     >
-                      <div className="flex items-start justify-between">
-                        <span className="font-mono text-xs font-bold text-gray-200 group-hover:text-emerald transition-colors">{skill.name}</span>
+                      <div className="flex items-start justify-between mb-2">
+                        <span className="font-mono text-sm md:text-base font-bold text-gray-200 group-hover:text-emerald transition-colors">{skill.name}</span>
                         <span className="font-mono text-[9px] text-gray-500 uppercase">{skill.level}</span>
                       </div>
                       
                       {/* Skill Slot Preview Graphic */}
-                      <div className="w-8 h-8 bg-[#12181b] rounded border border-emerald/10 flex items-center justify-center font-pixel text-emerald text-xs group-hover:scale-110 transition-transform">
-                        {skill.name.substring(0, 2).toUpperCase()}
+                      <div className="w-12 h-12 bg-[#12181b] rounded border border-emerald/10 flex items-center justify-center text-emerald group-hover:scale-110 transition-transform">
+                        {getSkillIcon(skill.icon)}
                       </div>
 
                       {/* Tooltip Hover detail */}

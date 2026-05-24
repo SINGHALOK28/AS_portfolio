@@ -168,12 +168,14 @@ export default function Card({
       style={{
         rotateX: rotateX,
         rotateY: rotateY,
+        scale: isHovered ? 1.03 : 1,
         transformStyle: "preserve-3d",
+        transition: "scale 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
       }}
       className={cn(
         "group relative flex flex-col p-6 rounded-xl glass-panel voxel-clip transition-all duration-300 select-none cursor-pointer",
         activeRarity.border,
-        "shadow-lg",
+        "shadow-[0_8px_30px_rgb(0,0,0,0.4)]",
         activeRarity.shadow,
         className
       )}
@@ -184,7 +186,7 @@ export default function Card({
         <div
           className="absolute inset-0 pointer-events-none transition-opacity duration-300"
           style={{
-            background: `radial-gradient(circle 120px at ${spotlightPos.x}px ${spotlightPos.y}px, ${activeRarity.glowColor}, transparent 70%)`,
+            background: `radial-gradient(circle 180px at ${spotlightPos.x}px ${spotlightPos.y}px, ${activeRarity.glowColor.replace('0.25', '0.4').replace('0.3', '0.5')}, transparent 80%)`,
             zIndex: 1,
           }}
         />

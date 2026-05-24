@@ -100,6 +100,17 @@ export async function fetchAllStats(config: typeof USER_CONFIG = USER_CONFIG): P
           stats.github.forks = forks || stats.github.forks;
         }
       }
+      
+      // Fetch commits via local proxy to bypass GitHub PAT token limits
+      try {
+        const commitRes = await fetchWithTimeout(`/api/stats/github?username=${github}`);
+        if (commitRes.ok) {
+          const commitData = await commitRes.json();
+          stats.github.commitsThisYear = commitData.commitsThisYear || stats.github.commitsThisYear;
+        }
+      } catch (ce) {
+        console.warn("GitHub commits fetch failed.", ce);
+      }
     }
   } catch (e) {
     console.warn("GitHub fetch failed, using fallback metrics.", e);

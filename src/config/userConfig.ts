@@ -11,7 +11,7 @@ export const USER_CONFIG = {
     ],
     avatarUrl: "/avatar.png",
     bio: "Aspiring developer with experience in building end-to-end web applications using Python, SQL, and Django. Skilled in backend development, database design, and integrating application logic with user-facing components. Interested in scalable applications and applying AI/ML concepts to real-world problems.",
-    resumeUrl: "#",
+    resumeUrl: "/aloksinghaiml.pdf",
     email: "aloksinghchas01@gmail.com",
     phone: "+91 6207698566",
   },
@@ -22,7 +22,7 @@ export const USER_CONFIG = {
     codeforces: "singhalok19",
     codechef: "singhalok19",
     geeksforgeeks: "singhalok19",
-    linkedin: "alok-singh",
+    linkedin: "alok-singh-261149295",
   },
   
   // High-fidelity fallback stats for offline/rate-limit use
@@ -125,16 +125,16 @@ export const USER_CONFIG = {
       // Languages
       { name: "Python", category: "languages", level: "Expert", value: 90, icon: "python", desc: "Core language for model workflows, backend APIs, and scraping runs." },
       { name: "SQL", category: "languages", level: "Expert", value: 86, icon: "database", desc: "Writing optimized queries, joins, and database operations." },
-      { name: "C++", category: "languages", level: "Advanced", value: 84, icon: "cpp", desc: "Primary language for algorithmic logic and data structures." },
+      { name: "C++", category: "languages", level: "Intermediate", value: 84, icon: "cpp", desc: "Primary language for algorithmic logic and data structures." },
       { name: "C", category: "languages", level: "Intermediate", value: 76, icon: "c", desc: "System-level fundamentals and memory allocation." },
       { name: "Java", category: "languages", level: "Intermediate", value: 78, icon: "java", desc: "Object-oriented structures and desktop integrations." },
       
       // Data Science Libraries
       { name: "Pandas", category: "libraries", level: "Expert", value: 88, icon: "pandas", desc: "Tabular data cleaning, transformations, and aggregation pipelines." },
       { name: "NumPy", category: "libraries", level: "Expert", value: 86, icon: "numpy", desc: "Linear algebra, multidimensional matrix arrays, and array operations." },
-      { name: "Matplotlib", category: "libraries", level: "Advanced", value: 82, icon: "chart", desc: "Plotting static analytical charts and training performance visuals." },
-      { name: "Seaborn", category: "libraries", level: "Advanced", value: 80, icon: "chart", desc: "Heatmaps, distributions, and customized statistical graphs." },
-      { name: "Scikit-learn", category: "libraries", level: "Advanced", value: 84, icon: "scikit", desc: "Preprocessing pipelines, classification splits, and predictive estimators." },
+      { name: "Matplotlib", category: "libraries", level: "Intermediate", value: 82, icon: "chart", desc: "Plotting static analytical charts and training performance visuals." },
+      { name: "Seaborn", category: "libraries", level: "Intermediate", value: 80, icon: "chart", desc: "Heatmaps, distributions, and customized statistical graphs." },
+      { name: "Scikit-learn", category: "libraries", level: "Intermediate", value: 84, icon: "scikit", desc: "Preprocessing pipelines, classification splits, and predictive estimators." },
       
       // NLP & AI
       { name: "spaCy", category: "nlp-ai", level: "Expert", value: 85, icon: "nlp", desc: "Industrial-grade entity extraction, tagging, and lemmatization." },
@@ -143,21 +143,32 @@ export const USER_CONFIG = {
       
       // Web & DB
       { name: "MySQL", category: "tools", level: "Expert", value: 85, icon: "mysql", desc: "Relational schema design, transactions, and indexing." },
-      { name: "HTML & CSS", category: "tools", level: "Advanced", value: 82, icon: "web", desc: "Building responsive grids, navigation menus, and clean web forms." },
-      { name: "JavaScript", category: "tools", level: "Advanced", value: 84, icon: "javascript", desc: "Creating extensions, script hooks, and asynchronous client events." },
-      { name: "Tableau", category: "tools", level: "Advanced", value: 80, icon: "tableau", desc: "Creating visual dashboard sheets, forensic graphs, and business metrics." },
+      { name: "HTML & CSS", category: "tools", level: "Intermediate", value: 82, icon: "web", desc: "Building responsive grids, navigation menus, and clean web forms." },
+      { name: "JS", category: "tools", level: "Intermediate", value: 84, icon: "javascript", desc: "Creating extensions, script hooks, and asynchronous client events." },
+      { name: "Tableau", category: "tools", level: "Intermediate", value: 80, icon: "tableau", desc: "Creating visual dashboard sheets, forensic graphs, and business metrics." },
       
       // Developer Tools
       { name: "Git and GitHub", category: "dev-tools", level: "Expert", value: 90, icon: "git", desc: "Distributed version control, remote repos, and project workflows." },
-      { name: "Chrome Extension", category: "dev-tools", level: "Advanced", value: 85, icon: "chrome", desc: "Building script injections and threat monitoring browser extensions." },
-      { name: "Azure DevOps", category: "dev-tools", level: "Advanced", value: 80, icon: "azure", desc: "Automating builds, testing hooks, and branch triggers using YAML." },
-      { name: "Streamlit", category: "dev-tools", level: "Advanced", value: 85, icon: "streamlit", desc: "Deploying local ML dashboard prototypes in pure Python." }
+      { name: "Chrome Extension", category: "dev-tools", level: "Intermediate", value: 85, icon: "chrome", desc: "Building script injections and threat monitoring browser extensions." },
+      { name: "Azure DevOps", category: "dev-tools", level: "Intermediate", value: 80, icon: "azure", desc: "Automating builds, testing hooks, and branch triggers using YAML." },
+      { name: "Streamlit", category: "dev-tools", level: "Intermediate", value: 85, icon: "streamlit", desc: "Deploying local ML dashboard prototypes in pure Python." }
     ]
   },
 
   experiences: [
     {
-      role: "Data Analytics Virtual Intern",
+      role: "Quantitative Research Virtual Experience",
+      company: "JPMorgan Chase & Co. (via Forage)",
+      duration: "Sept 2025",
+      achievements: [
+        "Completed a simulation focused on quantitative research methods and predictive modeling.",
+        "Analyzed a book of loans to estimate customer probability of default using Python.",
+        "Utilized dynamic programming to convert FICO scores into categorical data to predict defaults."
+      ],
+      techs: ["Python", "Data Analysis", "Dynamic Programming", "Statistics"]
+    },
+    {
+      role: "Data Analytics Virtual Experience",
       company: "Deloitte Australia (via Forage Simulation)",
       duration: "2024 (Virtual Job Simulation)",
       achievements: [
@@ -176,7 +187,7 @@ export const USER_CONFIG = {
         "Built Chrome extensions mapping OSINT defense data and computing threat classification levels in real-time.",
         "Configured custom sentence-transformer pipelines running on Streamlit instances to parse and evaluate resume profiles."
       ],
-      techs: ["Python", "JavaScript", "Django REST", "React.js", "Azure DevOps"]
+      techs: ["Python", "JS", "Django REST", "React.js", "Azure DevOps"]
     }
   ],
 
@@ -190,6 +201,7 @@ export const USER_CONFIG = {
       techStack: ["React.js", "Django REST", "MongoDB", "Vertex AI", "Google Maps API"],
       github: "https://github.com/alok-singh",
       demo: "https://github.com/alok-singh",
+      demoImage: "/projects/jansaathi.png",
       featured: true,
       status: "Production Ready",
       metrics: { resolutionSpeed: "92%", APIlatency: "45ms", detectionAccuracy: "94%" },
@@ -204,8 +216,9 @@ export const USER_CONFIG = {
       shortDesc: "NLP scanning engine parsing resumes and performing candidate scoring via semantic embedding analysis.",
       longDesc: "A semantic parsing utility that extracts over 200+ specialized tech skills from PDF/DOCX resumes. Utilizes spaCy, NLTK tokenizers, and sentence-transformers (all-MiniLM-L6-v2) to compute cosine similarity scores, delivering 35% higher precision than classic keyword matching algorithms.",
       techStack: ["Python", "Streamlit", "Sentence Transformers", "spaCy", "NLTK"],
-      github: "https://github.com/alok-singh",
-      demo: "https://github.com/alok-singh",
+      github: "https://github.com/SINGHALOK28/AI-Resume-Screening-Skill-Gap-Analyzer",
+      demo: "https://github.com/SINGHALOK28/AI-Resume-Screening-Skill-Gap-Analyzer",
+      demoImage: "/projects/resume_nlp.png",
       featured: true,
       status: "Stable v1.0",
       metrics: { semanticAccuracy: "90%", matchTime: "<2s", screeningReduction: "60%" },
@@ -219,9 +232,10 @@ export const USER_CONFIG = {
       category: "Web Security Utilities",
       shortDesc: "Real-time threat level extension detecting entities and highlighting risks.",
       longDesc: "A modular Chrome extension designed to scan live web content, isolating defense-related terminology (countries, military assets, agencies). Uses a custom threat weighting engine to highlight threat indicators and categorize sites (LOW/MEDIUM/HIGH) with negligible browser impact.",
-      techStack: ["JavaScript", "Chrome Extension APIs", "NLP Analytics", "Threat Weighting"],
-      github: "https://github.com/alok-singh",
-      demo: "https://github.com/alok-singh",
+      techStack: ["JS", "Chrome Extension APIs", "NLP Analytics", "Threat Weighting"],
+      github: "https://github.com/SINGHALOK28/defence-osint-extension",
+      demo: "https://github.com/SINGHALOK28/defence-osint-extension",
+      demoImage: "/projects/osint.png",
       featured: true,
       status: "Beta v0.8",
       metrics: { analysisLatency: "<1s", scanReduction: "70%", threatRecall: "91%" },
@@ -238,6 +252,9 @@ export const USER_CONFIG = {
       techStack: ["Azure DevOps", "YAML", "Git & Azure Repos", "Azure Boards"],
       github: "https://github.com/alok-singh",
       demo: "https://github.com/alok-singh",
+      demoImage: "/projects/devops.png",
+      reportUrl: "/certificates/wrp_report_1119.pdf",
+      certificateUrl: "/certificates/Xpro.pdf",
       featured: false,
       status: "Completed Run",
       metrics: { automationRate: "100%", buildDuration: "2.5m", sprintCycles: "6" },
@@ -276,18 +293,48 @@ export const USER_CONFIG = {
 
   certifications: [
     {
+      title: "XPro DevOps Automation Certification",
+      issuer: "XPro",
+      date: "2024",
+      credentialId: "XPRO-DEVOPS",
+      credentialUrl: "/certificates/Xpro.pdf",
+      pdfUrl: "/certificates/Xpro.pdf",
+      skillsGained: ["Azure DevOps", "CI/CD", "YAML", "Git"],
+      badgeColor: "#0078D7"
+    },
+    {
       title: "Deloitte Australia Data Analytics Job Simulation",
       issuer: "Deloitte Australia / Forage",
-      date: "2024",
+      date: "Sept 2025",
       credentialId: "FORAGE-DELOITTE-DA-SIM",
       credentialUrl: "https://theforage.com",
-      pdfUrl: "/certificates/deloitte.pdf",
+      pdfUrl: "https://www.theforage.com/completion-certificates/9PBTqmSxAf6zZTseP/io9DzWKe3PTsiS6GG_9PBTqmSxAf6zZTseP_g4DZ9vz7gdRFfWJgj_1757267638420_completion_certificate.pdf",
       skillsGained: ["Forensic Data Analysis", "Tableau Reporting", "Excel Aggregations", "Business Communication"],
       badgeColor: "#00a3e0"
+    },
+    {
+      title: "Quantitative Research Virtual Experience",
+      issuer: "JPMorgan Chase & Co. / Forage",
+      date: "Sept 2025",
+      credentialId: "FORAGE-JPMORGAN-QUANT",
+      credentialUrl: "https://theforage.com",
+      pdfUrl: "https://www.theforage.com/completion-certificates/Sj7temL583QAYpHXD/bWqaecPDbYAwSDqJy_Sj7temL583QAYpHXD_g4DZ9vz7gdRFfWJgj_1758031284558_completion_certificate.pdf",
+      skillsGained: ["Algorithm Development", "Credit Analysis", "Data Analysis", "Financial Derivatives", "Python", "Statistics"],
+      badgeColor: "#0A2F64"
     }
   ],
 
   leadership: [
+    {
+      position: "Vice President",
+      organization: "DOT Club (Official CSE Data Science Club)",
+      duration: "Active Role",
+      details: [
+        "Organizing and conducting technical events, seminars, and workshops for the Computer Science department.",
+        "Mentoring and upskilling junior fellows with core Data Science technologies.",
+        "Managing the tech ecosystem, event operations, and coordinating leadership responsibilities within the club."
+      ]
+    },
     {
       position: "PES College Coding Group Member",
       organization: "PES College of Engineering",
@@ -316,7 +363,7 @@ export const USER_CONFIG = {
       title: "Building Chrome Extensions for Threat Detection Scraping",
       date: "Mar 2026",
       readingTime: "6 min read",
-      tags: ["JavaScript", "APIs", "Security"],
+      tags: ["JS", "APIs", "Security"],
       difficulty: "Advanced",
       summary: "A practical guide to building lightweight background service scripts that scan DOM trees without blocking screen interaction.",
       content: "Chrome extensions can easily lag user screens if they query the DOM synchronously. By offloading text analysis to chrome service worker threads and utilizing idle callbacks, we can run OSINT threat-scoring engines seamlessly..."
@@ -330,7 +377,7 @@ export const USER_CONFIG = {
       title: "Colossus 2.0 Hackathon Winner",
       category: "Hackathons",
       date: "2025",
-      image: "/gallery/colossus.jpg",
+      images: ["/gallery/colossus.png", "/gallery/colossus.png", "/gallery/colossus.png"],
       tags: ["1st Place", "Bengaluru", "Team Work"],
       desc: "Winning Colossus 2.0 hackathon at Dr. B. R. Ambedkar Institute of Technology. What an amazing night!"
     },
@@ -340,7 +387,7 @@ export const USER_CONFIG = {
       title: "PES Varsity Football Match",
       category: "Sports",
       date: "2024",
-      image: "/gallery/football.jpg",
+      image: "/gallery/football.png",
       tags: ["VTU Division", "Football", "Squad"],
       desc: "PES college squad before the kickoff in the VTU inter-collegiate tournament."
     }

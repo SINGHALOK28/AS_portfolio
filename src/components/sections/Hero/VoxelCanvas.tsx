@@ -1,156 +1,205 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useMemo, useEffect, useState, Suspense } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { OrbitControls, Stars, Float } from "@react-three/drei";
+import { Stars, Float, Html } from "@react-three/drei";
 import * as THREE from "three";
+import voxelDataRaw from "./human_voxels.json";
+// Force hot-reload
 
-// Individual Voxel block helper
-interface BlockProps {
-  position: [number, number, number];
-  color?: string;
-  roughness?: number;
-  emissive?: string;
-  emissiveIntensity?: number;
+interface VoxelData {
+  x: number;
+  y: number;
+  z: number;
+  color: string;
+}
+const VOXELS = voxelDataRaw as VoxelData[];
+
+// ═══════════════════════════════════════════════════════
+// INSTANCED VOXELS — rendering 1000+ tiny blocks efficiently
+// ═══════════════════════════════════════════════════════
+
+function HumanVoxelModel() {
+  const meshRef = useRef<THREE.InstancedMesh>(null);
+  const [hovered, setHovered] = useState(false);
+
+  const { dummy, colorObj } = useMemo(() => ({
+    dummy: new THREE.Object3D(),
+    colorObj: new THREE.Color(),
+  }), []);
+
+  useEffect(() => {
+    if (!meshRef.current) return;
+    
+    VOXELS.forEach((v, i) => {
+      // Center the character vertically
+      dummy.position.set(v.x, v.y - 16, v.z);
+      dummy.scale.set(1, 1, 1);
+      dummy.updateMatrix();
+      meshRef.current!.setMatrixAt(i, dummy.matrix);
+
+      colorObj.set(v.color);
+      meshRef.current!.setColorAt(i, colorObj);
+    });
+
+    meshRef.current.instanceMatrix.needsUpdate = true;
+    if (meshRef.current.instanceColor) {
+      meshRef.current.instanceColor.needsUpdate = true;
+    }
+  }, [dummy, colorObj]);
+
+  useFrame(({ clock }) => {
+    if (!meshRef.current) return;
+    const t = clock.getElapsedTime();
+    meshRef.current.position.y = Math.sin(t * 1.5) * 0.5;
+  });
+
+  useEffect(() => {
+    document.body.style.cursor = hovered ? "pointer" : "auto";
+    return () => { document.body.style.cursor = "auto"; };
+  }, [hovered]);
+
+  const SCALE = 0.25;
+
+  return (
+    <group 
+      scale={[SCALE, SCALE, SCALE]}
+      onPointerOver={(e) => { e.stopPropagation(); setHovered(true); }}
+      onPointerOut={(e) => { e.stopPropagation(); setHovered(false); }}
+    >
+      <instancedMesh
+        ref={meshRef}
+        args={[undefined, undefined, VOXELS.length]}
+        castShadow
+        receiveShadow
+      >
+        <boxGeometry args={[1, 1, 1]}>
+          <instancedBufferAttribute attach="attributes-color" args={[new Float32Array(VOXELS.length * 3), 3]} />
+        </boxGeometry>
+        {/* Material for the tiny voxels */}
+        <meshPhysicalMaterial
+          vertexColors
+          roughness={0.4}
+          metalness={0.1}
+          clearcoat={0.3}
+          clearcoatRoughness={0.2}
+          emissive="#ffffff"
+          emissiveIntensity={0.02} // Subtle glow so very dark skins aren't totally invisible
+        />
+      </instancedMesh>
+
+      {/* Edge outlines to ensure blocks are always visible even if black */}
+      <instancedMesh args={[undefined, undefined, VOXELS.length]}>
+        <edgesGeometry args={[new THREE.BoxGeometry(1, 1, 1)]} />
+        <lineBasicMaterial color="#50c878" transparent opacity={0.3} />
+      </instancedMesh>
+
+      {/* Hover message */}
+      <Html position={[0, 22, 0]} center zIndexRange={[100, 0]}>
+        <div
+          className="bg-[#0a0f11]/95 border-2 border-emerald/50 text-emerald font-mono px-5 py-2.5 rounded-xl whitespace-nowrap shadow-[0_0_25px_rgba(80,200,120,0.4)] backdrop-blur-md pointer-events-none transition-all duration-300 ease-out"
+          style={{
+            opacity: hovered ? 1 : 0,
+            transform: `translateY(${hovered ? "0px" : "15px"}) scale(${hovered ? 1 : 0.9})`,
+          }}
+        >
+          <span className="text-emerald font-bold animate-pulse mr-2">{"//"}</span>
+          <span className="text-gray-100 font-bold tracking-wide">Hello I&apos;m Alok here</span>
+        </div>
+      </Html>
+    </group>
+  );
 }
 
-function VoxelBlock({ position, color = "#2e8b57", roughness = 0.8, emissive, emissiveIntensity = 0 }: BlockProps) {
+// ═══════════════════════════════════════════════════════
+// FLOATING PARTICLES
+// ═══════════════════════════════════════════════════════
+
+const _tempObj = new THREE.Object3D();
+
+function FloatingParticles({ count = 35 }: { count?: number }) {
+  const meshRef = useRef<THREE.InstancedMesh>(null);
+
+  const particleData = useMemo(() =>
+    Array.from({ length: count }, (_, i) => ({
+      pos: new THREE.Vector3(
+        (Math.random() - 0.5) * 14,
+        (Math.random() - 0.5) * 14,
+        (Math.random() - 0.5) * 8
+      ),
+      speed: 0.25 + Math.random() * 0.6,
+      phase: Math.random() * Math.PI * 2,
+      scale: 0.03 + Math.random() * 0.06,
+    })), [count]);
+
+  useFrame(({ clock }) => {
+    if (!meshRef.current) return;
+    const t = clock.getElapsedTime();
+    for (let i = 0; i < count; i++) {
+      const p = particleData[i];
+      _tempObj.position.set(
+        p.pos.x + Math.sin(t * p.speed + p.phase) * 1.5,
+        p.pos.y + Math.cos(t * p.speed * 0.7 + p.phase) * 2,
+        p.pos.z + Math.sin(t * p.speed * 0.5 + p.phase * 2) * 1
+      );
+      const s = p.scale * (0.7 + 0.5 * Math.sin(t * 2 + p.phase));
+      _tempObj.scale.setScalar(s);
+      _tempObj.updateMatrix();
+      meshRef.current.setMatrixAt(i, _tempObj.matrix);
+    }
+    meshRef.current.instanceMatrix.needsUpdate = true;
+  });
+
   return (
-    <mesh position={position}>
-      <boxGeometry args={[0.9, 0.9, 0.9]} />
-      <meshStandardMaterial
-        color={color}
-        roughness={roughness}
-        emissive={emissive ? new THREE.Color(emissive) : undefined}
-        emissiveIntensity={emissiveIntensity}
+    <instancedMesh ref={meshRef} args={[undefined, undefined, count]}>
+      <sphereGeometry args={[1, 6, 6]} />
+      <meshBasicMaterial color="#50c878" transparent opacity={0.45} />
+    </instancedMesh>
+  );
+}
+
+function GroundGlow() {
+  return (
+    <mesh rotation-x={-Math.PI / 2} position={[0, -3.7, 0]} receiveShadow>
+      <circleGeometry args={[2.5, 32]} />
+      <meshBasicMaterial
+        color="#50c878"
+        transparent
+        opacity={0.08}
+        blending={THREE.AdditiveBlending}
+        depthWrite={false}
       />
     </mesh>
   );
 }
 
-// Tree structure helper
-function VoxelTree({ position }: { position: [number, number, number] }) {
-  const [tx, ty, tz] = position;
-  return (
-    <group>
-      {/* Trunk (Brown) */}
-      <VoxelBlock position={[tx, ty, tz]} color="#8b5a2b" />
-      <VoxelBlock position={[tx, ty + 1, tz]} color="#8b5a2b" />
-      <VoxelBlock position={[tx, ty + 2, tz]} color="#8b5a2b" />
-      
-      {/* Leaves (Green) */}
-      <VoxelBlock position={[tx, ty + 3, tz]} color="#1e5d3c" />
-      <VoxelBlock position={[tx - 1, ty + 3, tz]} color="#226f46" />
-      <VoxelBlock position={[tx + 1, ty + 3, tz]} color="#226f46" />
-      <VoxelBlock position={[tx, ty + 3, tz - 1]} color="#226f46" />
-      <VoxelBlock position={[tx, ty + 3, tz + 1]} color="#226f46" />
-      
-      <VoxelBlock position={[tx, ty + 4, tz]} color="#2e8b57" />
-      <VoxelBlock position={[tx - 1, ty + 4, tz]} color="#2e8b57" />
-      <VoxelBlock position={[tx + 1, ty + 4, tz]} color="#2e8b57" />
-    </group>
-  );
-}
-
-// Floating clouds helper
-function VoxelCloud({ startPosition, speed }: { startPosition: [number, number, number]; speed: number }) {
-  const cloudRef = useRef<THREE.Group>(null);
-  const [x, y, z] = startPosition;
-
-  useFrame((state) => {
-    if (!cloudRef.current) return;
-    // Drift cloud slowly
-    cloudRef.current.position.x += speed;
-    if (cloudRef.current.position.x > 12) {
-      cloudRef.current.position.x = -12;
-    }
-  });
-
-  return (
-    <group ref={cloudRef} position={[x, y, z]}>
-      <VoxelBlock position={[0, 0, 0]} color="#ffffff" roughness={0.2} />
-      <VoxelBlock position={[1, 0, 0]} color="#eeeeee" roughness={0.2} />
-      <VoxelBlock position={[0, 0, 1]} color="#eeeeee" roughness={0.2} />
-      <VoxelBlock position={[0, 0, -1]} color="#eeeeee" roughness={0.2} />
-      <VoxelBlock position={[-1, 0, 0]} color="#dddddd" roughness={0.2} />
-      <VoxelBlock position={[0, 0.6, 0]} color="#ffffff" roughness={0.2} />
-    </group>
-  );
-}
-
-// Scene controller that handles mouse parallax movement
 function SceneContent() {
   const sceneRef = useRef<THREE.Group>(null);
   const { mouse } = useThree();
 
   useFrame(() => {
     if (!sceneRef.current) return;
-    
-    // Smooth mouse follow (parallax) rotation
     const targetRotY = mouse.x * 0.4;
-    const targetRotX = -mouse.y * 0.2;
-    
+    const targetRotX = -mouse.y * 0.15;
     sceneRef.current.rotation.y += (targetRotY - sceneRef.current.rotation.y) * 0.05;
     sceneRef.current.rotation.x += (targetRotX - sceneRef.current.rotation.x) * 0.05;
   });
 
   return (
     <group ref={sceneRef}>
-      {/* Floating Island Base (Grass top) */}
-      <group position={[0, -1.5, 0]}>
-        {/* Core grass grid */}
-        {Array.from({ length: 5 }).map((_, xIndex) => {
-          return Array.from({ length: 5 }).map((_, zIndex) => {
-            const posX = xIndex - 2;
-            const posZ = zIndex - 2;
-            // Carve corners for pixel island feel
-            if (Math.abs(posX) === 2 && Math.abs(posZ) === 2) return null;
-            
-            return (
-              <group key={`${posX}-${posZ}`}>
-                {/* Grass Block */}
-                <VoxelBlock position={[posX, 0, posZ]} color="#4caf50" />
-                {/* Dirt Underneath */}
-                <VoxelBlock position={[posX, -1, posZ]} color="#8b5a2b" />
-                {/* Stone Bottom */}
-                <VoxelBlock position={[posX, -2, posZ]} color="#707070" />
-              </group>
-            );
-          });
-        })}
+      <Float speed={2.5} rotationIntensity={0} floatIntensity={0.8}>
+        <group>
+          <HumanVoxelModel />
 
-        {/* Tree on the side */}
-        <VoxelTree position={[-1.2, 0.8, -1.2]} />
+          <pointLight intensity={8} color="#00e5ff" distance={16} position={[5, 3, 7]} />
+          <pointLight intensity={5} color="#ff00ff" distance={14} position={[-5, 1, -5]} />
+          <pointLight intensity={6} color="#50c878" distance={12} position={[0, -6, 3]} />
+          <pointLight intensity={3} color="#ffffff" distance={10} position={[0, 8, 0]} />
 
-        {/* Voxel Campfire (Redstone Torch) */}
-        <group position={[1.2, 0.8, 1.2]}>
-          <VoxelBlock position={[0, 0, 0]} color="#555555" />
-          <VoxelBlock position={[0, 0.8, 0]} color="#ff5500" emissive="#ff3300" emissiveIntensity={2.5} />
-          <pointLight position={[0, 1.2, 0]} intensity={4} distance={6} color="#ffaa00" />
+          <FloatingParticles count={35} />
+          <GroundGlow />
         </group>
-
-        {/* Floating Centered Monolith (Developer Core) */}
-        <Float speed={2.5} rotationIntensity={1.5} floatIntensity={1}>
-          <group position={[0, 1.8, 0]}>
-            {/* Spinning Diamond block */}
-            <mesh>
-              <boxGeometry args={[0.7, 0.7, 0.7]} />
-              <meshStandardMaterial
-                color="#7df9ff"
-                roughness={0.1}
-                metalness={0.9}
-                emissive="#7df9ff"
-                emissiveIntensity={1.2}
-              />
-            </mesh>
-            <pointLight intensity={3} color="#7df9ff" distance={5} />
-          </group>
-        </Float>
-      </group>
-
-      {/* Ambient Clouds */}
-      <VoxelCloud startPosition={[-8, 3, -4]} speed={0.005} />
-      <VoxelCloud startPosition={[4, 2.5, 4]} speed={0.003} />
+      </Float>
     </group>
   );
 }
@@ -159,32 +208,30 @@ export default function VoxelCanvas() {
   return (
     <div className="w-full h-full min-h-[350px] md:min-h-[500px]">
       <Canvas
-        camera={{ position: [0, 2.5, 8], fov: 45 }}
-        gl={{ antialias: true, alpha: true }}
+        camera={{ position: [0, 1.5, 10], fov: 42 }}
+        gl={{
+          antialias: true,
+          alpha: true,
+          toneMapping: THREE.ACESFilmicToneMapping,
+          toneMappingExposure: 1.15,
+        }}
+        dpr={[1, 2]}
+        shadows
       >
-        <ambientLight intensity={0.4} />
-        {/* Sun directional light */}
+        <ambientLight intensity={0.8} color="#c8e6ff" />
         <directionalLight
-          position={[5, 10, 3]}
-          intensity={1.5}
+          position={[5, 10, 5]}
+          intensity={2.0}
           castShadow
           shadow-mapSize-width={1024}
           shadow-mapSize-height={1024}
+          color="#fff5e0"
         />
-        
-        {/* Soft background stars */}
-        <Stars radius={100} depth={50} count={350} factor={4} saturation={0.5} fade speed={1} />
-        
-        {/* Dynamic Voxel scene */}
-        <SceneContent />
+        <directionalLight position={[-3, -2, 5]} intensity={0.5} color="#50c878" />
 
-        {/* Orbit controls for user interaction (recruiter can drag & spin) */}
-        <OrbitControls
-          enableZoom={false}
-          enablePan={false}
-          minPolarAngle={Math.PI / 4}
-          maxPolarAngle={Math.PI / 1.8}
-        />
+        <Stars radius={100} depth={50} count={400} factor={4} saturation={0.5} fade speed={1} />
+        
+        <SceneContent />
       </Canvas>
     </div>
   );

@@ -123,7 +123,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
 
         {/* Title */}
         <h2 className="font-pixel text-[12px] uppercase tracking-wider mb-2 text-cyan-glow-text text-color-cyan-glow">
-          Generating World
+          Loading
         </h2>
         
         <p className="font-mono text-sm tracking-wide text-gray-400 h-6 mb-6">

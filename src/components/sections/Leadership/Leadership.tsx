@@ -50,12 +50,23 @@ export default function Leadership() {
               <Card
                 rarity={idx === 0 ? "epic" : "rare"}
                 onClick={playClickSound}
-                className="h-full p-6 flex flex-col justify-between"
+                className="h-full p-6 flex flex-col justify-between relative overflow-hidden group"
               >
-                <div className="space-y-4">
+                {/* Ambient Shifting Background Layer */}
+                <motion.div 
+                  className="absolute -inset-6 z-0 opacity-[0.06] group-hover:opacity-[0.15] transition-opacity duration-500 rounded-xl"
+                  animate={{ 
+                    backgroundColor: idx === 0 
+                      ? ["#50c878", "#9d4edd", "#50c878"] 
+                      : ["#00a3e0", "#7df9ff", "#00a3e0"] 
+                  }}
+                  transition={{ duration: 4 + idx, repeat: Infinity, ease: "linear" }}
+                />
+
+                <div className="space-y-4 relative z-10">
                   {/* Card Title Header */}
                   <div className="flex items-start space-x-4">
-                    <div className="p-3 bg-[#0a0f11] border border-gray-800 rounded-lg flex items-center justify-center shrink-0 voxel-clip">
+                    <div className="p-3 bg-[#0a0f11]/80 backdrop-blur-sm border border-gray-800 rounded-lg flex items-center justify-center shrink-0 voxel-clip">
                       {idx === 0 ? (
                         <ShieldCheck className="w-6 h-6 text-purple-glow" />
                       ) : (
@@ -73,7 +84,7 @@ export default function Leadership() {
                   </div>
 
                   {/* Duration Metadata Tag */}
-                  <div className="inline-block font-mono text-[9px] text-gray-400 bg-[#0c1214] border border-gray-800 px-2 py-0.5 rounded">
+                  <div className="inline-block font-mono text-[9px] text-gray-400 bg-[#0c1214]/80 backdrop-blur border border-gray-800 px-2 py-0.5 rounded">
                     {lead.duration}
                   </div>
 

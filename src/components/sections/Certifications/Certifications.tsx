@@ -151,7 +151,7 @@ export default function Certifications() {
             // CREDENTIALS_DATABASE
           </h2>
           <h1 className="font-mono text-3xl md:text-5xl font-extrabold tracking-tight">
-            Cryptographic Certifications
+            Certifications
           </h1>
           <p className="font-sans text-xs text-gray-400 mt-2 max-w-sm">
             Click cards to flip and inspect core capabilities verified by AWS, Google, and Meta.

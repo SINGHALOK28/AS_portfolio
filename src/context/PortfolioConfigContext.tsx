@@ -10,6 +10,8 @@ interface PortfolioConfigContextType {
   updateConfig: (newConfig: ConfigType) => void;
   resetConfig: () => void;
   isLoaded: boolean;
+  theme: string;
+  setTheme: (theme: string) => void;
 }
 
 const PortfolioConfigContext = createContext<PortfolioConfigContextType | undefined>(undefined);
@@ -17,6 +19,15 @@ const PortfolioConfigContext = createContext<PortfolioConfigContextType | undefi
 export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [config, setConfig] = useState<ConfigType>(USER_CONFIG);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [theme, setThemeState] = useState("emerald");
+
+  const setTheme = (newTheme: string) => {
+    setThemeState(newTheme);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("portfolio_theme", newTheme);
+      document.documentElement.setAttribute("data-theme", newTheme);
+    }
+  };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -26,8 +37,43 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
           const parsed = JSON.parse(stored);
           // Simple validation check: ensure it has key sections
           if (parsed && parsed.profile && parsed.skills) {
+            // Force sync from source if the new Vice President role is missing from the stale cache
+            if (!JSON.stringify(parsed.leadership).includes("Vice President")) {
+              parsed.leadership = USER_CONFIG.leadership;
+              parsed.experiences = USER_CONFIG.experiences;
+            }
+            
+            // Force usernames and certifications to always sync from source code to avoid stale caches
+            parsed.usernames = USER_CONFIG.usernames;
+            parsed.certifications = USER_CONFIG.certifications;
+            parsed.experiences = USER_CONFIG.experiences;
+            parsed.gallery = USER_CONFIG.gallery;
+            parsed.profile = USER_CONFIG.profile;
+            
+            // Sync new demoImage fields into stale cache safely
+            if (parsed.projects) {
+              parsed.projects = parsed.projects.map((p: any) => {
+                const sourceProj = USER_CONFIG.projects.find(sp => sp.id === p.id);
+                return { 
+                  ...p, 
+                  demoImage: sourceProj?.demoImage || p.demoImage,
+                  github: sourceProj?.github || p.github,
+                  demo: sourceProj?.demo || p.demo
+                };
+              });
+            }
+
             setConfig(parsed);
           }
+        }
+        
+        // Load theme
+        const storedTheme = window.localStorage.getItem("portfolio_theme");
+        if (storedTheme) {
+          setThemeState(storedTheme);
+          document.documentElement.setAttribute("data-theme", storedTheme);
+        } else {
+          document.documentElement.setAttribute("data-theme", "emerald");
         }
       } catch (err) {
         console.error("Failed to load portfolio config from localStorage:", err);
@@ -60,7 +106,7 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   };
 
   return (
-    <PortfolioConfigContext.Provider value={{ config, updateConfig, resetConfig, isLoaded }}>
+    <PortfolioConfigContext.Provider value={{ config, updateConfig, resetConfig, isLoaded, theme, setTheme }}>
       {children}
     </PortfolioConfigContext.Provider>
   );

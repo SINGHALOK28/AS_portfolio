@@ -8,6 +8,7 @@ import LoadingScreen from "@/components/ui/LoadingScreen";
 import ParticleCanvas from "@/components/ui/ParticleCanvas";
 import NetherPortal from "@/components/ui/NetherPortal";
 import Navbar from "@/components/ui/Navbar";
+import BackToTop from "@/components/ui/BackToTop";
 import useKonamiCode from "@/hooks/useKonamiCode";
 
 // Page section components
@@ -93,6 +94,8 @@ export default function Home() {
             isOpen={isPortalOpen} 
             onClose={() => setIsPortalOpen(false)} 
           />
+          
+          <BackToTop />
 
         </div>
       )}

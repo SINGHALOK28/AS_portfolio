@@ -9,7 +9,7 @@ import { Github, Linkedin } from "@/components/ui/Icons";
 import { playClickSound, toggleSound, getSoundStatus, playXpSound } from "@/utils/soundManager";
 
 // Load 3D Voxel Canvas dynamically on the client to support WebGL and bypass SSR issues
-const VoxelCanvas = dynamic(() => import("./VoxelCanvas"), {
+const HeroVoxelAvatar = dynamic(() => import("../About/MiniVoxelAvatar"), {
   ssr: false,
   loading: () => (
     <div className="w-full h-full min-h-[350px] md:min-h-[500px] flex items-center justify-center">
@@ -82,16 +82,41 @@ export default function Hero() {
 
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center pt-24 pb-16 overflow-hidden bg-[#070b0c]">
+      
+      {/* Ambient Animated Lighting Effects */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <motion.div
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.15, 0.35, 0.15],
+            x: [0, 150, -50, 0],
+            y: [0, -100, 50, 0],
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[10%] left-[20%] w-[40vw] h-[40vw] max-w-[600px] max-h-[600px] bg-emerald rounded-full mix-blend-screen blur-[120px]"
+        />
+        <motion.div
+          animate={{
+            scale: [1, 1.4, 1],
+            opacity: [0.1, 0.3, 0.1],
+            x: [0, -100, 100, 0],
+            y: [0, 150, -50, 0],
+          }}
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute bottom-[10%] right-[10%] w-[45vw] h-[45vw] max-w-[700px] max-h-[700px] bg-cyan-glow rounded-full mix-blend-screen blur-[140px]"
+        />
+      </div>
+
       {/* HUD Diagonal Grid lines */}
       <div
-        className="absolute inset-0 opacity-10 pointer-events-none"
+        className="absolute inset-0 opacity-10 pointer-events-none z-0"
         style={{
           backgroundImage: `linear-gradient(rgba(80, 200, 120, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(80, 200, 120, 0.1) 1px, transparent 1px)`,
           backgroundSize: "40px 40px"
         }}
       />
-      <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#0b0f10] to-transparent pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#0b0f10] to-transparent pointer-events-none" />
+      <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#0b0f10] to-transparent pointer-events-none z-10" />
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#0b0f10] to-transparent pointer-events-none z-10" />
 
       <div className="max-w-7xl w-full mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
 
@@ -139,6 +164,9 @@ export default function Hero() {
             </button>
             <a
               href={config.profile.resumeUrl}
+              download="Alok_Singh_Resume.pdf"
+              target="_blank"
+              rel="noreferrer"
               onClick={handleActionClick}
               className="inline-flex items-center space-x-2 px-6 py-3 border border-emerald/40 hover:border-emerald hover:bg-emerald/10 font-mono text-sm font-semibold tracking-wider text-emerald transition-colors rounded-lg"
             >
@@ -161,7 +189,7 @@ export default function Hero() {
                 <Github className="w-5 h-5" />
               </a>
               <a
-                href={`https://linkedin.com/in/${config.usernames.linkedin}`}
+                href={`https://www.linkedin.com/in/${config.usernames.linkedin}`}
                 target="_blank"
                 rel="noreferrer"
                 onClick={handleActionClick}
@@ -172,14 +200,6 @@ export default function Hero() {
               </a>
             </div>
 
-            {/* Toggle Sound Control */}
-            <button
-              onClick={handleSoundToggle}
-              className="inline-flex items-center space-x-2 px-3 py-1.5 border border-emerald/20 hover:border-emerald/50 bg-[#0b1011] rounded-lg text-gray-400 hover:text-emerald text-xs font-mono transition-colors"
-            >
-              {soundActive ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
-              <span>SOUND: {soundActive ? "ON" : "OFF"}</span>
-            </button>
           </div>
         </motion.div>
 
@@ -196,7 +216,35 @@ export default function Hero() {
           <div className="absolute bottom-2 left-2 border-b border-l border-emerald/40 w-4 h-4 pointer-events-none" />
           <div className="absolute bottom-2 right-2 border-b border-r border-emerald/40 w-4 h-4 pointer-events-none" />
 
-          <VoxelCanvas />
+          {/* Multi Glow Point Blinking Effect */}
+          <div className="absolute inset-0 pointer-events-none z-15">
+            {[
+              { top: '20%', left: '80%', delay: 0, dur: 2.5 },
+              { top: '75%', left: '20%', delay: 0.8, dur: 2 },
+              { top: '85%', left: '85%', delay: 1.5, dur: 3 },
+              { top: '30%', left: '15%', delay: 0.4, dur: 2.2 },
+              { top: '60%', left: '90%', delay: 1.2, dur: 2.8 },
+              { top: '15%', left: '35%', delay: 0.5, dur: 1.8 },
+            ].map((pos, i) => (
+              <motion.div
+                key={`hero-glow-${i}`}
+                className={`absolute w-1.5 h-1.5 rounded-full ${i % 2 === 0 ? 'bg-emerald shadow-[0_0_15px_rgba(80,200,120,0.8)]' : 'bg-cyan-glow shadow-[0_0_15px_rgba(0,255,240,0.8)]'}`}
+                animate={{
+                  opacity: [0, 1, 0],
+                  scale: [0.5, 1.5, 0.5],
+                }}
+                transition={{
+                  duration: pos.dur,
+                  repeat: Infinity,
+                  delay: pos.delay,
+                  ease: "easeInOut"
+                }}
+                style={{ top: pos.top, left: pos.left }}
+              />
+            ))}
+          </div>
+
+          <HeroVoxelAvatar />
         </motion.div>
       </div>
 

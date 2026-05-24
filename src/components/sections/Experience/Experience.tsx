@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { usePortfolioConfig } from "@/context/PortfolioConfigContext";
 import Card from "@/components/ui/Card";
 import { playClickSound, playXpSound } from "@/utils/soundManager";
-import { Map, Zap, CheckCircle2 } from "lucide-react";
+import { Map, CheckCircle2 } from "lucide-react";
 
 export default function Experience() {
   const { config } = usePortfolioConfig();
@@ -128,21 +128,7 @@ export default function Experience() {
                           ))}
                         </div>
 
-                        {/* Claimable reward pill */}
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleLogSync(idx);
-                          }}
-                          className={`flex items-center space-x-1.5 px-3 py-1.5 font-pixel text-[9px] border rounded transition-all ${
-                            isSynced
-                              ? "bg-emerald/10 border-emerald/30 text-emerald cursor-default"
-                              : "bg-emerald text-black border-emerald hover:bg-cyan-glow hover:border-cyan-glow shadow-[2px_2px_0_#000] active:translate-y-0.5"
-                          }`}
-                        >
-                          <Zap className="w-3.5 h-3.5" />
-                          <span>{isSynced ? "SYNCHRONIZED" : "SYNC LOG"}</span>
-                        </button>
+
                       </div>
                     </Card>
                   </div>

@@ -4,13 +4,14 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePortfolioConfig } from "@/context/PortfolioConfigContext";
 import { playClickSound } from "@/utils/soundManager";
-import { Eye, X, Image as ImageIcon, Calendar, Tag, Move } from "lucide-react";
+import { Eye, X, Image as ImageIcon, Calendar, Tag, Move, ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function Gallery() {
   const { config } = usePortfolioConfig();
   const galleryItems = config.gallery;
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
   const [activeFilter, setActiveFilter] = useState("all");
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const filters = ["all", ...Array.from(new Set(galleryItems.map(item => item.category)))];
 
@@ -21,12 +22,25 @@ export default function Gallery() {
   const openLightbox = (item: any) => {
     playClickSound();
     setSelectedItem(item);
+    setCurrentImageIndex(0);
   };
 
   const closeLightbox = () => {
     playClickSound();
     setSelectedItem(null);
   };
+
+  // Lock background scroll when lightbox is open
+  React.useEffect(() => {
+    if (selectedItem) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [selectedItem]);
 
   // Helper renderer for different card styles
   const renderCard = (item: any) => {
@@ -46,9 +60,13 @@ export default function Gallery() {
           {/* Photo Slot */}
           <div className="h-44 w-full bg-zinc-800 border border-gray-400/30 overflow-hidden relative group">
             {/* Draw a voxel placeholder SVG directly if no real image path */}
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald/40 to-cyan-glow/30 flex items-center justify-center">
-              <ImageIcon className="w-12 h-12 text-white/50" />
-            </div>
+            {item.image || (item.images && item.images.length > 0) ? (
+              <img src={item.image || item.images[0]} alt={item.title} className="absolute inset-0 w-full h-full object-cover" />
+            ) : (
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald/40 to-cyan-glow/30 flex items-center justify-center">
+                <ImageIcon className="w-12 h-12 text-white/50" />
+              </div>
+            )}
             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
               <button 
                 onClick={() => openLightbox(item)}
@@ -84,8 +102,14 @@ export default function Gallery() {
           <div className="hologram-screen absolute inset-0 pointer-events-none" />
 
           <div className="h-36 w-full bg-cyan-glow/5 border border-cyan-glow/15 flex items-center justify-center relative rounded overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-tr from-cyan-glow/20 to-purple-glow/10" />
-            <ImageIcon className="w-12 h-12 text-cyan-glow/30 group-hover:scale-110 transition-transform relative z-20" />
+            {item.image || (item.images && item.images.length > 0) ? (
+              <img src={item.image || item.images[0]} alt={item.title} className="absolute inset-0 w-full h-full object-cover opacity-80 mix-blend-screen group-hover:scale-110 transition-transform duration-500" />
+            ) : (
+              <>
+                <div className="absolute inset-0 bg-gradient-to-tr from-cyan-glow/20 to-purple-glow/10" />
+                <ImageIcon className="w-12 h-12 text-cyan-glow/30 group-hover:scale-110 transition-transform relative z-20" />
+              </>
+            )}
           </div>
 
           <div className="mt-3 relative z-20">
@@ -111,7 +135,11 @@ export default function Gallery() {
       >
         {/* Visual canvas representation */}
         <div className="absolute inset-0 bg-gradient-to-br from-emerald/20 to-deep-green/10 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
-          <ImageIcon className="w-16 h-16 text-emerald/30 group-hover:opacity-60 transition-opacity" />
+          {item.image || (item.images && item.images.length > 0) ? (
+            <img src={item.image || item.images[0]} alt={item.title} className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity" />
+          ) : (
+            <ImageIcon className="w-16 h-16 text-emerald/30 group-hover:opacity-60 transition-opacity" />
+          )}
         </div>
 
         {/* Hover overlay text content */}
@@ -145,10 +173,10 @@ export default function Gallery() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div className="flex flex-col">
             <h2 className="font-pixel text-[12px] uppercase tracking-wider text-purple-glow mb-2">
-              // MEMORY_MUSEUM
+              // GALLERY
             </h2>
             <h1 className="font-mono text-3xl md:text-5xl font-extrabold tracking-tight">
-              Voxel Memory Gallery
+              Gallery
             </h1>
             <p className="font-sans text-xs text-gray-400 mt-2 max-w-sm">
               Draggable Polaroids, Holograms, and event logs from college and hackathons.
@@ -185,7 +213,7 @@ export default function Gallery() {
         {/* Fullscreen Lightbox Modal */}
         <AnimatePresence>
           {selectedItem && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div data-lenis-prevent="true" className="fixed inset-0 z-50 flex items-center justify-center p-4">
               {/* Blur backdrop */}
               <motion.div
                 initial={{ opacity: 0 }}
@@ -203,15 +231,50 @@ export default function Gallery() {
                 className="bg-[#0b0f10] border border-purple-glow/30 max-w-4xl w-full rounded-2xl overflow-hidden relative z-10 flex flex-col md:flex-row max-h-[85vh] voxel-clip"
               >
                 {/* Visual Image container */}
-                <div className="md:w-2/3 bg-black flex items-center justify-center p-6 border-b md:border-b-0 md:border-r border-purple-glow/10 min-h-[300px]">
-                  <div className="w-full h-64 bg-gradient-to-br from-purple-glow/20 to-cyan-glow/20 rounded-lg flex flex-col items-center justify-center border border-purple-glow/15">
-                    <ImageIcon className="w-16 h-16 text-purple-glow/40 animate-pulse" />
-                    <span className="font-mono text-xs text-gray-500 mt-2 font-bold uppercase">RENDERED_MEMORY_FRAME</span>
+                <div className="md:w-2/3 bg-black flex items-center justify-center p-6 border-b md:border-b-0 md:border-r border-purple-glow/10 min-h-[300px] relative group">
+                  
+                  {/* Next / Prev buttons for Multi-image carousels */}
+                  {selectedItem.images && selectedItem.images.length > 1 && (
+                     <>
+                        <button 
+                          onClick={(e) => { e.stopPropagation(); playClickSound(); setCurrentImageIndex(prev => prev > 0 ? prev - 1 : selectedItem.images.length - 1); }} 
+                          className="absolute left-4 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur border border-white/20 opacity-0 group-hover:opacity-100 transition-opacity z-20 shadow-lg"
+                        >
+                          <ChevronLeft className="w-5 h-5" />
+                        </button>
+                        <button 
+                          onClick={(e) => { e.stopPropagation(); playClickSound(); setCurrentImageIndex(prev => prev < selectedItem.images.length - 1 ? prev + 1 : 0); }} 
+                          className="absolute right-4 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur border border-white/20 opacity-0 group-hover:opacity-100 transition-opacity z-20 shadow-lg"
+                        >
+                          <ChevronRight className="w-5 h-5" />
+                        </button>
+                        {/* Dots indicator */}
+                        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-1.5 z-20 bg-black/50 px-2.5 py-1.5 rounded-full backdrop-blur border border-white/10">
+                          {selectedItem.images.map((_: any, idx: number) => (
+                             <div key={idx} className={`w-1.5 h-1.5 rounded-full transition-all ${idx === currentImageIndex ? 'bg-purple-glow scale-125' : 'bg-white/40'}`} />
+                          ))}
+                        </div>
+                     </>
+                  )}
+
+                  <div className="w-full h-full min-h-[250px] bg-gradient-to-br from-purple-glow/20 to-cyan-glow/20 rounded-lg flex flex-col items-center justify-center border border-purple-glow/15 relative overflow-hidden">
+                    {(selectedItem.images && selectedItem.images.length > 0) || selectedItem.image ? (
+                       <img 
+                          src={selectedItem.images ? selectedItem.images[currentImageIndex] : selectedItem.image} 
+                          alt={selectedItem.title} 
+                          className="absolute inset-0 w-full h-full object-cover opacity-80"
+                       />
+                    ) : (
+                      <>
+                        <ImageIcon className="w-16 h-16 text-purple-glow/40 animate-pulse relative z-10" />
+                        <span className="font-mono text-xs text-gray-500 mt-2 font-bold uppercase relative z-10">RENDERED_MEMORY_FRAME</span>
+                      </>
+                    )}
                   </div>
                 </div>
 
                 {/* Metadata Sidebar info */}
-                <div className="md:w-1/3 p-6 md:p-8 flex flex-col justify-between h-auto">
+                <div data-lenis-prevent="true" className="md:w-1/3 p-6 md:p-8 flex flex-col justify-between overflow-y-auto">
                   <div className="space-y-6">
                     <div className="flex justify-between items-start">
                       <span className="font-mono text-[9px] text-purple-glow bg-purple-glow/10 border border-purple-glow/20 px-2 py-0.5 rounded uppercase">
