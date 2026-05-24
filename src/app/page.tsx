@@ -11,6 +11,20 @@ import Navbar from "@/components/ui/Navbar";
 import BackToTop from "@/components/ui/BackToTop";
 import useKonamiCode from "@/hooks/useKonamiCode";
 
+/**
+ * Main Home Page (Root Component)
+ * 
+ * WHAT IT DOES:
+ * This is the primary Next.js page component that renders the entire single-page application.
+ * It manages the initial loading sequence, the rendering of all sections in a vertical stack, 
+ * and global event listeners like the Konami code easter egg.
+ * 
+ * HOW IT CONNECTS TO OTHER FILES:
+ * - Serves as the "Controller" that imports and mounts every `<Section>` (Hero, About, Projects, etc.).
+ * - Mounts global UI overlays like `<Navbar>`, `<BackToTop>`, and `<ParticleCanvas>`.
+ * - Imports `useKonamiCode` hook, which upon triggering, toggles the `<NetherPortal>` modal state.
+ */
+
 // Page section components
 import Hero from "@/components/sections/Hero/Hero";
 import About from "@/components/sections/About/About";

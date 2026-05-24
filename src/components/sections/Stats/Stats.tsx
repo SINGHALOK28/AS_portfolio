@@ -1,3 +1,14 @@
+/**
+ * Stats Section Component
+ * 
+ * WHAT IT DOES:
+ * Connects to the GitHub API (via Next.js server route or directly) to fetch the user's real-time
+ * commit activity, repository counts, and contribution graphs. 
+ * 
+ * HOW IT CONNECTS TO OTHER FILES:
+ * - Uses `config.usernames.github` to know which profile to query.
+ * - Imports the utility function `fetchGithubStats` (from `src/utils/statsFetcher.ts`) to handle the actual network requests asynchronously.
+ */
 "use client";
 
 import React, { useEffect, useState } from "react";

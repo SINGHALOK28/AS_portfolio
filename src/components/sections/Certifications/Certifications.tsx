@@ -1,3 +1,14 @@
+/**
+ * Certifications Section Component
+ * 
+ * WHAT IT DOES:
+ * Renders a grid of the user's professional certificates (like AWS, DeepLearning.AI, etc.).
+ * Includes hover animations and direct external links to verify the certificate or view the PDF.
+ * 
+ * HOW IT CONNECTS TO OTHER FILES:
+ * - Reads `config.certifications` from `PortfolioConfigContext`.
+ * - Standardizes the UI layout using the custom `Card` UI component (`@/components/ui/Card`).
+ */
 "use client";
 
 import React, { useState } from "react";

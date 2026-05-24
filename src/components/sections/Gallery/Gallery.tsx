@@ -6,6 +6,18 @@ import { usePortfolioConfig } from "@/context/PortfolioConfigContext";
 import { playClickSound } from "@/utils/soundManager";
 import { Eye, X, Image as ImageIcon, Calendar, Tag, Move, ChevronLeft, ChevronRight } from "lucide-react";
 
+/**
+ * Gallery Component
+ * 
+ * WHY THIS CODE EXISTS:
+ * This component renders a dynamic museum of the user's memories (e.g., hackathons, sports). 
+ * It supports different visual aesthetics (Polaroid, Hologram, Memory) to keep the UI engaging.
+ * 
+ * WHAT IT DOES:
+ * 1. Fetches gallery data from global context and provides categorical filtering logic.
+ * 2. Uses a custom `renderCard()` function to return entirely different React layouts depending on the `item.type` (e.g. draggable framer-motion cards for 'polaroid').
+ * 3. Provides a fullscreen Lightbox modal view that handles multi-image carousels with Next/Prev buttons if an item has multiple images.
+ */
 export default function Gallery() {
   const { config } = usePortfolioConfig();
   const galleryItems = config.gallery;

@@ -1,3 +1,14 @@
+/**
+ * Blog Section Component
+ * 
+ * WHAT IT DOES:
+ * Renders a grid of blog posts or articles authored by the user. 
+ * Allows users to read external content (e.g., Medium or Dev.to posts).
+ * 
+ * HOW IT CONNECTS TO OTHER FILES:
+ * - Reads `config.blogs` from `PortfolioConfigContext`.
+ * - Employs standard React mapping to output `Card` layouts for each post.
+ */
 "use client";
 
 import React, { useState } from "react";

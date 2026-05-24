@@ -8,6 +8,19 @@ import { playClickSound } from "@/utils/soundManager";
 import { Search, ExternalLink, Cpu, Database, Eye, X, Award } from "lucide-react";
 import { Github } from "@/components/ui/Icons";
 
+/**
+ * Projects Component
+ * 
+ * WHY THIS CODE EXISTS:
+ * This component is responsible for rendering the portfolio's project gallery. 
+ * It manages state for filtering projects by category and displaying a detailed modal when a project is clicked.
+ * 
+ * WHAT IT DOES:
+ * 1. Pulls the dynamic `projects` array from the global configuration context.
+ * 2. Provides search functionality (`searchQuery`) and category filtering (`selectedCategory`).
+ * 3. Renders a grid of `Card` components, displaying key information like tech stack and status.
+ * 4. Manages an interactive framer-motion modal (`selectedProject`) that locks background scrolling and displays in-depth details (metrics, challenges, Github links) when a card is clicked.
+ */
 export default function Projects() {
   const { config } = usePortfolioConfig();
   const projects = config.projects;

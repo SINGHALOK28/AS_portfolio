@@ -1,3 +1,14 @@
+/**
+ * About Section Component
+ * 
+ * WHAT IT DOES:
+ * Renders the "About Me" section. It displays a terminal-themed bio, a dynamic timeline
+ * of the user's educational background, and graphical skill bars to highlight core competencies.
+ * 
+ * HOW IT CONNECTS TO OTHER FILES:
+ * - Fetches `config.profile`, `config.education`, and `config.skills` from `PortfolioConfigContext`.
+ * - Uses the global `data-theme` colors (via Tailwind `text-emerald`, `bg-emerald`, etc.) to stay in sync with the active theme.
+ */
 "use client";
 
 import React, { useEffect, useState } from "react";

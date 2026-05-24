@@ -15,6 +15,18 @@ export const metadata: Metadata = {
   }
 };
 
+/**
+ * Root Layout Component
+ * 
+ * WHAT IT DOES:
+ * This is the Next.js App Router root layout. It defines the `<html>` and `<body>` tags and 
+ * sets the baseline global styles and fonts for the entire application. It also defines the SEO metadata.
+ * 
+ * HOW IT CONNECTS TO OTHER FILES:
+ * - Wraps the entire application inside the `<PortfolioProvider>` (from `PortfolioConfigContext`), injecting global state into all child pages/components.
+ * - Wraps child content in `<SmoothScroll>`, enabling Lenis smooth scrolling globally.
+ * - Imports `globals.css` where all the Tailwind and custom Minecraft/CSS-variable theme tokens are defined.
+ */
 export default function RootLayout({
   children,
 }: Readonly<{

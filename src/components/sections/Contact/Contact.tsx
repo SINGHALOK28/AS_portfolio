@@ -1,3 +1,14 @@
+/**
+ * Contact Section Component
+ * 
+ * WHAT IT DOES:
+ * Provides a working form for recruiters or visitors to send a direct message to the user.
+ * Simulates a retro terminal interface for the form inputs.
+ * 
+ * HOW IT CONNECTS TO OTHER FILES:
+ * - Reads `config.profile.email` to display the raw email address as a fallback.
+ * - (Optional) Sends POST requests to `src/app/api/contact/route.ts` if a backend email service like Resend or Nodemailer is wired up.
+ */
 "use client";
 
 import React, { useState } from "react";

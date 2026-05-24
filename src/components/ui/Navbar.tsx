@@ -22,6 +22,18 @@ const NAV_ITEMS = [
   { id: "contact", label: "Contact" }
 ];
 
+/**
+ * Navbar Component
+ * 
+ * WHY THIS CODE EXISTS:
+ * This component provides the primary navigation for the portfolio, sticking to the top of the viewport.
+ * It ensures users can jump between sections, toggle UI sound effects, and switch the global color theme.
+ * 
+ * WHAT IT DOES:
+ * 1. Tracks the `scrolled` state to transition its background from transparent to a frosted glassmorphism effect when the user scrolls down.
+ * 2. Renders a mobile-responsive menu (hamburger icon) and desktop navigation links.
+ * 3. Integrates the `usePortfolioConfig` hook to dynamically change the global CSS theme (`emerald`, `diamond`, `redstone`, etc.) when the Palette icon is clicked.
+ */
 export default function Navbar() {
   const { config, theme, setTheme } = usePortfolioConfig();
   const [activeSection, setActiveSection] = useState("about");

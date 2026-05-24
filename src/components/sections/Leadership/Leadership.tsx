@@ -7,6 +7,16 @@ import Card from "@/components/ui/Card";
 import { playClickSound } from "@/utils/soundManager";
 import { Users, CheckCircle, ShieldCheck } from "lucide-react";
 
+/**
+ * Leadership Section Component
+ * 
+ * WHAT IT DOES:
+ * Highlights extracurricular leadership roles (e.g., Club President, Coordinator).
+ * Displays responsibilities in a stylized card format.
+ * 
+ * HOW IT CONNECTS TO OTHER FILES:
+ * - Reads `config.leadership` from `PortfolioConfigContext`.
+ */
 export default function Leadership() {
   const { config } = usePortfolioConfig();
   const leadership = config.leadership;

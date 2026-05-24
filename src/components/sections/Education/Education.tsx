@@ -7,6 +7,17 @@ import Card from "@/components/ui/Card";
 import { playClickSound } from "@/utils/soundManager";
 import { GraduationCap, Calendar, Award, BookOpen } from "lucide-react";
 
+/**
+ * Education Section Component
+ * 
+ * WHAT IT DOES:
+ * Displays a styled, vertical timeline of the user's educational history (High school, College, etc.).
+ * It uses Minecraft-inspired borders and glowing node elements to maintain the voxel aesthetic.
+ * 
+ * HOW IT CONNECTS TO OTHER FILES:
+ * - Pulls the array of educational milestones directly from `config.education` in `PortfolioConfigContext`.
+ * - Relies on `globals.css` for custom utility classes like `.voxel-clip`.
+ */
 export default function Education() {
   const { config } = usePortfolioConfig();
   const education = config.education;

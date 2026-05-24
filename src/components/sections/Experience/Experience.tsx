@@ -7,6 +7,18 @@ import Card from "@/components/ui/Card";
 import { playClickSound, playXpSound } from "@/utils/soundManager";
 import { Map, CheckCircle2 } from "lucide-react";
 
+/**
+ * Experience Section Component
+ * 
+ * WHAT IT DOES:
+ * Displays the user's professional work experience (internships, jobs) in an interactive, terminal-like UI.
+ * Users can expand/collapse each role to see the bullet points describing what they built.
+ * 
+ * HOW IT CONNECTS TO OTHER FILES:
+ * - Reads `config.experiences` from `PortfolioConfigContext`.
+ * - Employs Framer Motion for smooth accordion (expand/collapse) animations when jobs are clicked.
+ * - Imports global `playClickSound` to play Minecraft UI sounds upon interaction.
+ */
 export default function Experience() {
   const { config } = usePortfolioConfig();
   const experiences = config.experiences;

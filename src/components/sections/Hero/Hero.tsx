@@ -18,6 +18,18 @@ const HeroVoxelAvatar = dynamic(() => import("../About/MiniVoxelAvatar"), {
   )
 });
 
+/**
+ * Hero Section Component
+ * 
+ * WHY THIS CODE EXISTS:
+ * The Hero section acts as the primary landing zone and first impression for the portfolio.
+ * It combines static HUD/UI elements with a heavy WebGL 3D canvas (loaded dynamically) to immediately establish the "Minecraft/Voxel" aesthetic.
+ * 
+ * WHAT IT DOES:
+ * 1. Features a custom typewriter effect (`roleText`) that cycles through the user's titles (from `config.profile.roles`).
+ * 2. Dynamically imports `HeroVoxelAvatar` to render the 3D character (bypassing Next.js SSR to prevent WebGL hydration errors).
+ * 3. Renders background ambient animations (`framer-motion`) and direct call-to-action buttons (like Download Resume).
+ */
 export default function Hero() {
   const { config } = usePortfolioConfig();
   const [roleText, setRoleText] = useState("");

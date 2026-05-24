@@ -14,6 +14,19 @@ interface PortfolioConfigContextType {
   setTheme: (theme: string) => void;
 }
 
+/**
+ * PortfolioConfigContext
+ * 
+ * WHY THIS CODE EXISTS:
+ * This Context Provider serves as the global state manager for the entire portfolio.
+ * It holds the configuration data (from userConfig.ts) and the current UI theme.
+ * 
+ * WHAT IT DOES:
+ * 1. Initializes global state with data from `USER_CONFIG`.
+ * 2. Caches the configuration and theme into the browser's `localStorage` so that user preferences persist across sessions.
+ * 3. Provides a mechanism to securely sync updates from the source code over stale cache data to ensure users always see the latest projects and URLs.
+ * 4. Injects CSS custom variables into the DOM (`data-theme`) to enable dynamic color switching globally.
+ */
 const PortfolioConfigContext = createContext<PortfolioConfigContextType | undefined>(undefined);
 
 export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

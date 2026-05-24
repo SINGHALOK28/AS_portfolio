@@ -1,3 +1,14 @@
+/**
+ * Skills Section Component
+ * 
+ * WHAT IT DOES:
+ * Renders a visually interactive "Inventory" or "Skill Tree" system. It groups the user's
+ * technical skills by category (Frontend, Backend, Database, etc.) and simulates a retro crafting/terminal compilation effect.
+ * 
+ * HOW IT CONNECTS TO OTHER FILES:
+ * - Maps over the `config.skills` data from `PortfolioConfigContext`.
+ * - Automatically assigns different Lucide React icons (`Code2`, `Server`, etc.) dynamically based on the skill category name.
+ */
 "use client";
 
 import React, { useState } from "react";

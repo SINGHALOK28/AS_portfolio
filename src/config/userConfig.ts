@@ -1,3 +1,16 @@
+/**
+ * USER_CONFIG (Portfolio Content & Data)
+ * 
+ * WHY THIS CODE EXISTS:
+ * This file acts as the central "database" for the entire portfolio. 
+ * Hardcoding data directly inside React components makes the code messy and difficult to update. 
+ * By separating the data into this configuration file, you achieve a clean separation of concerns.
+ * 
+ * WHAT IT DOES:
+ * 1. Exports a single JSON-like object (`USER_CONFIG`) that holds all personal information, projects, skills, and gallery items.
+ * 2. React components import this object (via PortfolioConfigContext) and map over the arrays to dynamically generate the UI.
+ * 3. To update any text, image, or link on the website, you only need to modify this file instead of hunting through JSX code.
+ */
 export const USER_CONFIG = {
   profile: {
     name: "Alok Singh",

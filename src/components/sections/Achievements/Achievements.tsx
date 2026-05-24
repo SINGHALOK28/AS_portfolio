@@ -1,3 +1,14 @@
+/**
+ * Achievements Section Component
+ * 
+ * WHAT IT DOES:
+ * Showcases notable awards and accomplishments (Hackathons, Coding competitions).
+ * Uses a grid layout with floating, animated 3D-like cards.
+ * 
+ * HOW IT CONNECTS TO OTHER FILES:
+ * - Reads `config.achievements` from `PortfolioConfigContext`.
+ * - Uses Lucide React icons dynamically to map visual indicators (Trophy, Crown) to specific achievements.
+ */
 "use client";
 
 import React from "react";
