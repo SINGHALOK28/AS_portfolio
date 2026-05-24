@@ -2,7 +2,7 @@
 
 # 🌌 Alok Singh | Interactive Voxel Portfolio
 
-<a href="https://YOUR-VERCEL-LINK-HERE.vercel.app">
+<a href="https://as-portfolio-chi.vercel.app">
   <img src="https://img.shields.io/badge/🌍_Live_Demo-Click_Here-50c878?style=for-the-badge" alt="Live Demo" />
 </a>
 
