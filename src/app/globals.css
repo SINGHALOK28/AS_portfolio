@@ -93,11 +93,6 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
   overflow-x: hidden;
-  cursor: url('/error_cursor.svg') 12 12, auto;
-}
-
-button, a, select, input, [role="button"], .cursor-pointer {
-  cursor: url('/error_cursor.svg') 12 12, pointer !important;
 }
 
 /* Voxel double borders */
