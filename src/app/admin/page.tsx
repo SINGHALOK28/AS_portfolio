@@ -88,7 +88,7 @@ export default function AdminPage() {
 
 export const USER_CONFIG = ${JSON.stringify(editConfig, null, 2)};
 `;
-    const blob = new Blob([configString], { type: "text/typescript;charset=utf-8;" });
+    const blob = new Blob([configString], { type: "text/plain;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
