@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Alok Singh | Interactive Digital Universe
 
-## Getting Started
+![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
+![React](https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-3.0-cyan?style=for-the-badge&logo=tailwind-css)
+![Three.js](https://img.shields.io/badge/Three.js-WebGL-white?style=for-the-badge&logo=three.js)
+![Framer Motion](https://img.shields.io/badge/Framer_Motion-Animation-purple?style=for-the-badge&logo=framer)
 
-First, run the development server:
+Welcome to the source code of my interactive, voxel/Minecraft-inspired personal portfolio! This is not just a static resume; it's a fully gamified, immersive web experience built with modern web technologies.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## ✨ Key Features
+
+- **🎮 3D WebGL Avatar**: A fully interactive, responsive 3D voxel character rendered in the Hero section using React Three Fiber.
+- **🎨 Dynamic Theme Engine**: Users can switch between custom color palettes (Emerald, Redstone, Diamond, Amethyst, Gold, Obsidian) globally. Themes persist across sessions via `localStorage`.
+- **🔊 Spatial Audio & UI Sounds**: Features nostalgic Minecraft UI click sounds and experience orb sounds to enhance interactivity.
+- **🕹️ Easter Eggs**: Includes a hidden Konami Code sequence (`↑ ↑ ↓ ↓ ← → ← → B A`) that unlocks a secret Nether Portal dimension!
+- **📸 Interactive Gallery Museum**: A dynamic gallery featuring draggable polaroid physics, glitchy holograms, and standard memory cards.
+- **📊 Live GitHub Stats**: Connects asynchronously to the GitHub API to fetch and display real-time commit activity and repositories.
+- **🧩 Global State Management**: Centralized architecture where all personal data is isolated in `src/config/userConfig.ts`, meaning the entire portfolio can be updated without touching any React code.
+
+## 🏗️ Architecture & Code Structure
+
+The project follows a clean, highly modular component architecture:
+
+```text
+├── public/                 # Static assets, 3D models (.glb), PDFs, and Gallery images
+├── src/
+│   ├── app/                # Next.js 14 App Router layout and pages
+│   ├── components/
+│   │   ├── sections/       # Major UI blocks (Hero, Projects, Skills, Gallery, etc.)
+│   │   └── ui/             # Reusable global elements (Navbar, Cards, Buttons, LoadingScreen)
+│   ├── config/             # userConfig.ts - The centralized "Database" for all content
+│   ├── context/            # PortfolioConfigContext - Handles global state, theme, and cache sync
+│   ├── hooks/              # Custom React hooks (e.g., useKonamiCode)
+│   └── utils/              # Helper functions (e.g., soundManager, GitHub API fetcher)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+> **Developer Note:** Every major file in this codebase has been professionally annotated with architectural JSDoc comments explaining exactly `WHAT IT DOES` and `HOW IT CONNECTS TO OTHER FILES`. 
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Getting Started Locally
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To run this project on your local machine, follow these steps:
 
-## Learn More
+### Prerequisites
+Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
 
-To learn more about Next.js, take a look at the following resources:
+### Installation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/SINGHALOK28/AS_portfolio.git
+   cd AS_portfolio
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. **Install the dependencies:**
+   ```bash
+   npm install
+   ```
 
-## Deploy on Vercel
+3. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. **Explore the Universe:**
+   Open your browser and navigate to [http://localhost:3000](http://localhost:3000).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛠️ How to Customize (For other developers)
+
+If you fork this repository to build your own portfolio, you do **not** need to hunt through hundreds of lines of React JSX to change the text. 
+
+Simply open `src/config/userConfig.ts` and modify the JSON object. The global `PortfolioConfigContext` will automatically detect the changes, bypass the cache, and instantly populate the new data across all interactive UI components, modals, and grids.
+
+## 📄 License
+
+This project is open-source and available under the [MIT License](LICENSE). Feel free to fork it, learn from the WebGL integration, and use it as inspiration for your own interactive web applications!
+
+---
+*Built with passion, code, and a lot of caffeine by Alok Singh.*
