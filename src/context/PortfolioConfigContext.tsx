@@ -60,20 +60,21 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             parsed.usernames = USER_CONFIG.usernames;
             parsed.certifications = USER_CONFIG.certifications;
             parsed.experiences = USER_CONFIG.experiences;
-            parsed.gallery = USER_CONFIG.gallery;
             parsed.profile = USER_CONFIG.profile;
             
-            // Sync new demoImage fields into stale cache safely
+            // Sync new demoImage fields into stale cache safely, and filter out deleted projects
             if (parsed.projects) {
-              parsed.projects = parsed.projects.map((p: any) => {
-                const sourceProj = USER_CONFIG.projects.find(sp => sp.id === p.id);
-                return { 
-                  ...p, 
-                  demoImage: sourceProj?.demoImage || p.demoImage,
-                  github: sourceProj?.github || p.github,
-                  demo: sourceProj?.demo || p.demo
-                };
-              });
+              parsed.projects = parsed.projects
+                .filter((p: any) => USER_CONFIG.projects.some(sp => sp.id === p.id))
+                .map((p: any) => {
+                  const sourceProj = USER_CONFIG.projects.find(sp => sp.id === p.id);
+                  return { 
+                    ...p, 
+                    demoImage: sourceProj?.demoImage || p.demoImage,
+                    github: sourceProj?.github || p.github,
+                    demo: sourceProj?.demo || p.demo
+                  };
+                });
             }
 
             setConfig(parsed);

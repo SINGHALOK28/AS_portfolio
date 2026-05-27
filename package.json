@@ -9,9 +9,14 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@ai-sdk/deepseek": "^2.0.35",
+    "@ai-sdk/google": "^3.0.79",
+    "@ai-sdk/react": "^3.0.193",
+    "@ai-sdk/xai": "^3.0.92",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.1",
     "@react-three/postprocessing": "^3.0.4",
+    "ai": "^6.0.191",
     "canvas": "^3.2.3",
     "canvas-confetti": "^1.9.4",
     "clsx": "^2.1.1",

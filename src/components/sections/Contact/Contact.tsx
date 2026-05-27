@@ -38,12 +38,14 @@ export default function Contact() {
     setSending(true);
 
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Accept": "application/json"
         },
         body: JSON.stringify({
+          access_key: "2b053849-d9b5-4c0e-bae5-618695e018e0",
           name: name,
           email: email,
           message: message,
@@ -179,7 +181,7 @@ export default function Contact() {
               {success && (
                 <div className="mt-6 p-4 bg-emerald/10 border border-emerald/30 text-emerald text-xs font-mono rounded-lg flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-emerald animate-ping" />
-                  <span>Incoming log buffered successfully. Transmission synced.</span>
+                  <span>Thank you for reaching out!</span>
                 </div>
               )}
             </Card>

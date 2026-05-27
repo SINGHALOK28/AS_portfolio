@@ -9,6 +9,7 @@ import ParticleCanvas from "@/components/ui/ParticleCanvas";
 import NetherPortal from "@/components/ui/NetherPortal";
 import Navbar from "@/components/ui/Navbar";
 import BackToTop from "@/components/ui/BackToTop";
+import Chatbot from "@/components/ui/Chatbot";
 import useKonamiCode from "@/hooks/useKonamiCode";
 
 /**
@@ -35,8 +36,6 @@ import Experience from "@/components/sections/Experience/Experience";
 import Certifications from "@/components/sections/Certifications/Certifications";
 import Achievements from "@/components/sections/Achievements/Achievements";
 import Leadership from "@/components/sections/Leadership/Leadership";
-import Blog from "@/components/sections/Blog/Blog";
-import Gallery from "@/components/sections/Gallery/Gallery";
 import Stats from "@/components/sections/Stats/Stats";
 import Contact from "@/components/sections/Contact/Contact";
 import Footer from "@/components/sections/Footer/Footer";
@@ -97,8 +96,6 @@ export default function Home() {
           <Certifications />
           <Achievements />
           <Leadership />
-          <Blog />
-          <Gallery />
           <Stats />
           <Contact />
           <Footer />
@@ -110,6 +107,7 @@ export default function Home() {
           />
           
           <BackToTop />
+          <Chatbot />
 
         </div>
       )}

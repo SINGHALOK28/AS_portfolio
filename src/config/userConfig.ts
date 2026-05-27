@@ -28,7 +28,7 @@ export const USER_CONFIG = {
     email: "aloksinghchas01@gmail.com",
     phone: "+91 6207698566",
   },
-  
+
   usernames: {
     github: "SINGHALOK28",
     leetcode: "singhalok19",
@@ -37,7 +37,7 @@ export const USER_CONFIG = {
     geeksforgeeks: "singhalok19",
     linkedin: "alok-singh-261149295",
   },
-  
+
   // High-fidelity fallback stats for offline/rate-limit use
   fallbackStats: {
     github: {
@@ -141,25 +141,25 @@ export const USER_CONFIG = {
       { name: "C++", category: "languages", level: "Intermediate", value: 84, icon: "cpp", desc: "Primary language for algorithmic logic and data structures." },
       { name: "C", category: "languages", level: "Intermediate", value: 76, icon: "c", desc: "System-level fundamentals and memory allocation." },
       { name: "Java", category: "languages", level: "Intermediate", value: 78, icon: "java", desc: "Object-oriented structures and desktop integrations." },
-      
+
       // Data Science Libraries
       { name: "Pandas", category: "libraries", level: "Expert", value: 88, icon: "pandas", desc: "Tabular data cleaning, transformations, and aggregation pipelines." },
       { name: "NumPy", category: "libraries", level: "Expert", value: 86, icon: "numpy", desc: "Linear algebra, multidimensional matrix arrays, and array operations." },
       { name: "Matplotlib", category: "libraries", level: "Intermediate", value: 82, icon: "chart", desc: "Plotting static analytical charts and training performance visuals." },
       { name: "Seaborn", category: "libraries", level: "Intermediate", value: 80, icon: "chart", desc: "Heatmaps, distributions, and customized statistical graphs." },
       { name: "Scikit-learn", category: "libraries", level: "Intermediate", value: 84, icon: "scikit", desc: "Preprocessing pipelines, classification splits, and predictive estimators." },
-      
+
       // NLP & AI
       { name: "spaCy", category: "nlp-ai", level: "Expert", value: 85, icon: "nlp", desc: "Industrial-grade entity extraction, tagging, and lemmatization." },
       { name: "NLTK", category: "nlp-ai", level: "Expert", value: 84, icon: "nlp", desc: "Text tokenization, sentiment heuristics, and vocabulary corpus parsing." },
       { name: "Sentence Transformers", category: "nlp-ai", level: "Expert", value: 88, icon: "transformer", desc: "Generating contextual embeddings and semantic similarity scores." },
-      
+
       // Web & DB
       { name: "MySQL", category: "tools", level: "Expert", value: 85, icon: "mysql", desc: "Relational schema design, transactions, and indexing." },
       { name: "HTML & CSS", category: "tools", level: "Intermediate", value: 82, icon: "web", desc: "Building responsive grids, navigation menus, and clean web forms." },
       { name: "JS", category: "tools", level: "Intermediate", value: 84, icon: "javascript", desc: "Creating extensions, script hooks, and asynchronous client events." },
       { name: "Tableau", category: "tools", level: "Intermediate", value: 80, icon: "tableau", desc: "Creating visual dashboard sheets, forensic graphs, and business metrics." },
-      
+
       // Developer Tools
       { name: "Git and GitHub", category: "dev-tools", level: "Expert", value: 90, icon: "git", desc: "Distributed version control, remote repos, and project workflows." },
       { name: "Chrome Extension", category: "dev-tools", level: "Intermediate", value: 85, icon: "chrome", desc: "Building script injections and threat monitoring browser extensions." },
@@ -192,9 +192,9 @@ export const USER_CONFIG = {
       techs: ["Tableau", "Excel", "Data Analysis", "Forensics"]
     },
     {
-      role: "Project Developer & Team Lead",
+      role: "Project Co-Developer & Team Member",
       company: "PES College of Engineering, Mandya",
-      duration: "2023 - 2027",
+      duration: "2023 - 2026",
       achievements: [
         "Architected full-stack civic action platform 'Jan Saathi' incorporating Vertex AI classification and Google Maps API.",
         "Built Chrome extensions mapping OSINT defense data and computing threat classification levels in real-time.",
@@ -255,25 +255,6 @@ export const USER_CONFIG = {
       challenges: "Avoiding browser lockups while asynchronously scanning heavy HTML documents.",
       learnings: "Offloading parsing logic to Chrome service workers and running element highlights on idle frames.",
       architectureUrl: "/architecture_osint.png"
-    },
-    {
-      id: "xpro-azure",
-      title: "XPro DevOps automation",
-      category: "Cloud Engineering",
-      shortDesc: "Designed automated DevOps workflows integrating branch verification gates.",
-      longDesc: "Designed and deployed continuous integration and delivery scripts inside Azure DevOps using YAML. Maintained source code versioning on Git/Azure Repos, and coordinated task cycles using Azure Boards.",
-      techStack: ["Azure DevOps", "YAML", "Git & Azure Repos", "Azure Boards"],
-      github: "https://github.com/alok-singh",
-      demo: "https://github.com/alok-singh",
-      demoImage: "/projects/devops.png",
-      reportUrl: "/certificates/wrp_report_1119.pdf",
-      certificateUrl: "/certificates/Xpro.pdf",
-      featured: false,
-      status: "Completed Run",
-      metrics: { automationRate: "100%", buildDuration: "2.5m", sprintCycles: "6" },
-      challenges: "Securing service connection keys and configuring custom runners for testing workflows.",
-      learnings: "Structuring multi-stage Azure key vaults and deploying runner agents inside isolated network gates.",
-      architectureUrl: "/architecture_xpro.png"
     }
   ],
 
@@ -351,58 +332,12 @@ export const USER_CONFIG = {
     {
       position: "PES College Coding Group Member",
       organization: "PES College of Engineering",
-      duration: "2023 - 2027",
+      duration: "2023 - 2026",
       details: [
         "Participated in campus competitive code sprints, reviewing algorithm optimization styles.",
         "Collaborated with developers in building full-stack applications and Chrome utils.",
         "Coordinated team projects for VTU regional hackathons and inter-college contests."
       ]
-    }
-  ],
-
-  blogs: [
-    {
-      slug: "leveraging-transformers-for-resume-semantic-matching",
-      title: "Leveraging Transformers for Resume Semantic Matching",
-      date: "May 2026",
-      readingTime: "5 min read",
-      tags: ["Python", "NLP", "Transformers"],
-      difficulty: "Intermediate",
-      summary: "Understand how contextual embeddings from sentence transformers score candidate profile similarity with 35% higher precision than keyword counts.",
-      content: "When scanning resumes, simple keyword counts ignore context. A candidate who has 'led Python teams' is matches differently from 'wants to learn Python'. By generating semantic embeddings using sentence-transformers, we convert text into coordinate points..."
-    },
-    {
-      slug: "building-chrome-extensions-for-security-scraping",
-      title: "Building Chrome Extensions for Threat Detection Scraping",
-      date: "Mar 2026",
-      readingTime: "6 min read",
-      tags: ["JS", "APIs", "Security"],
-      difficulty: "Advanced",
-      summary: "A practical guide to building lightweight background service scripts that scan DOM trees without blocking screen interaction.",
-      content: "Chrome extensions can easily lag user screens if they query the DOM synchronously. By offloading text analysis to chrome service worker threads and utilizing idle callbacks, we can run OSINT threat-scoring engines seamlessly..."
-    }
-  ],
-
-  gallery: [
-    {
-      id: "colossus-win",
-      type: "memory",
-      title: "Colossus 2.0 Hackathon Winner",
-      category: "Hackathons",
-      date: "2025",
-      images: ["/gallery/colossus.png", "/gallery/colossus.png", "/gallery/colossus.png"],
-      tags: ["1st Place", "Bengaluru", "Team Work"],
-      desc: "Winning Colossus 2.0 hackathon at Dr. B. R. Ambedkar Institute of Technology. What an amazing night!"
-    },
-    {
-      id: "pes-football",
-      type: "polaroid",
-      title: "PES Varsity Football Match",
-      category: "Sports",
-      date: "2024",
-      image: "/gallery/football.png",
-      tags: ["VTU Division", "Football", "Squad"],
-      desc: "PES college squad before the kickoff in the VTU inter-collegiate tournament."
     }
   ]
 };

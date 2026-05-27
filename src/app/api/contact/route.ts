@@ -26,7 +26,8 @@ export async function POST(request: Request) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
+        "Accept": "application/json",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
       },
       body: JSON.stringify({
         access_key: accessKey,
@@ -36,6 +37,16 @@ export async function POST(request: Request) {
         subject,
       }),
     });
+
+    if (!res.ok) {
+      console.error("Web3Forms API returned status:", res.status);
+      const text = await res.text();
+      console.error("Web3Forms response body:", text.substring(0, 200));
+      return NextResponse.json(
+        { success: false, message: "Email service blocked the request. Please try again later." },
+        { status: res.status }
+      );
+    }
 
     const data = await res.json();
 

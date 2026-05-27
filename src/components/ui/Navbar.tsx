@@ -16,8 +16,6 @@ const NAV_ITEMS = [
   { id: "certifications", label: "Certifications" },
   { id: "achievements", label: "Achievements" },
   { id: "leadership", label: "Leadership" },
-  { id: "blog", label: "Blog" },
-  { id: "gallery", label: "Gallery" },
   { id: "stats", label: "Profiles" },
   { id: "contact", label: "Contact" }
 ];
@@ -97,25 +95,44 @@ export default function Navbar() {
     };
   }, []);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    const lenis = (window as any).lenis;
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+      if (lenis) lenis.stop();
+    } else {
+      document.body.style.overflow = "";
+      if (lenis) lenis.start();
+    }
+    return () => {
+      document.body.style.overflow = "";
+      if (lenis) lenis.start();
+    };
+  }, [mobileMenuOpen]);
+
   // Smooth scroll trigger with elegant offset
   const handleNavClick = (id: string) => {
     playClickSound();
     setMobileMenuOpen(false);
     
-    // Offset for the fixed Navbar (approx 80px)
-    const SCROLL_OFFSET = -80;
-    
-    // Check for globally exposed Lenis instance
-    const lenis = (window as any).lenis;
-    if (lenis) {
-      lenis.scrollTo(`#${id}`, { offset: SCROLL_OFFSET });
-    } else {
-      const el = document.getElementById(id);
-      if (el) {
-        const y = el.getBoundingClientRect().top + window.scrollY + SCROLL_OFFSET;
-        window.scrollTo({ top: y, behavior: "smooth" });
+    // Defer the scroll slightly to allow the mobile menu's scroll-lock (Lenis.stop) to release first
+    setTimeout(() => {
+      const SCROLL_OFFSET = -80;
+      const lenis = (window as any).lenis;
+      
+      if (lenis) {
+        // Ensure lenis is awake if it was just stopped by the mobile menu
+        lenis.start();
+        lenis.scrollTo(`#${id}`, { offset: SCROLL_OFFSET });
+      } else {
+        const el = document.getElementById(id);
+        if (el) {
+          const y = el.getBoundingClientRect().top + window.scrollY + SCROLL_OFFSET;
+          window.scrollTo({ top: y, behavior: "smooth" });
+        }
       }
-    }
+    }, 50);
   };
 
 
@@ -136,10 +153,12 @@ export default function Navbar() {
           <div className="flex items-center space-x-4 select-none">
             <div 
               onClick={() => handleNavClick("hero")}
-              className="font-pixel text-[11px] text-emerald hover:text-cyan-glow transition-colors cursor-pointer flex items-center gap-1.5"
+              className="font-pixel text-sm text-emerald hover:text-cyan-glow transition-colors cursor-pointer flex items-center gap-1.5"
             >
-              <span className="text-sm">⛏</span>
-              <span className="hidden sm:inline">{config.profile.name.toUpperCase().replace(/\s+/g, "_")}</span>
+              <span className="text-base font-bold drop-shadow-[0_0_1px_rgba(80,200,120,0.8)]">⛏</span>
+              <span className="hidden sm:inline font-bold text-base drop-shadow-[0_0_1px_rgba(80,200,120,0.8)]">
+                {config.profile.name.split(" ").map(n => n[0]).join("").toUpperCase()}
+              </span>
             </div>
             
 
@@ -154,7 +173,7 @@ export default function Navbar() {
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
                   className={cn(
-                    "px-1.5 py-1 font-pixel text-[7.5px] uppercase tracking-wide transition-all duration-200 border rounded-md relative select-none whitespace-nowrap",
+                    "px-1.5 py-1.5 font-pixel text-[9px] font-bold uppercase tracking-wide transition-all duration-200 border rounded-md relative select-none whitespace-nowrap",
                     isActive
                       ? "bg-emerald/10 border-emerald text-emerald shadow-[0_0_8px_rgba(80,200,120,0.15)]"
                       : "bg-transparent border-transparent text-gray-400 hover:text-gray-200 hover:border-[#232f32]"
@@ -199,7 +218,8 @@ export default function Navbar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-30 bg-black/90 backdrop-blur-md xl:hidden flex flex-col justify-center px-8"
+            data-lenis-prevent="true"
+            className="fixed inset-0 z-30 bg-black/90 backdrop-blur-md xl:hidden flex flex-col pt-24 pb-12 px-8 overflow-y-auto"
           >
             <nav className="flex flex-col space-y-4 max-w-sm mx-auto w-full">
               <span className="font-pixel text-[9px] text-gray-500 uppercase tracking-widest border-b border-[#232f32] pb-2 mb-2">
@@ -215,7 +235,7 @@ export default function Navbar() {
                     key={item.id}
                     onClick={() => handleNavClick(item.id)}
                     className={cn(
-                      "w-full text-left py-3 px-4 font-pixel text-xs rounded border transition-all flex justify-between items-center",
+                      "w-full text-left py-4 px-4 font-pixel text-base rounded border transition-all flex justify-between items-center",
                       isActive
                         ? "bg-emerald/10 border-emerald text-emerald shadow-[0_0_12px_rgba(80,200,120,0.2)]"
                         : "bg-[#090d0e]/50 border-[#1f2b2d] text-gray-400"
