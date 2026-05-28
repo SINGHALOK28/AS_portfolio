@@ -85,7 +85,10 @@ export default function Chatbot() {
         { id: (Date.now() + 1).toString(), role: "assistant", content: data.text },
       ]);
     } catch (err: any) {
-      alert("Error: " + err.message);
+      setMessages((prev) => [
+        ...prev,
+        { id: (Date.now() + 1).toString(), role: "assistant", content: "I apologize, but I'm experiencing a temporary issue. Please try again in a moment, or explore the sections on this website for details about Alok!" },
+      ]);
     } finally {
       setIsLoading(false);
     }

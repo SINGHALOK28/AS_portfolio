@@ -9,6 +9,67 @@ dns.setDefaultResultOrder("ipv4first");
 
 export const maxDuration = 30;
 
+// Dynamically build fallback responses from USER_CONFIG — no outside data
+function buildFallbacks() {
+  const c = USER_CONFIG;
+
+  const skills = `Here are **${c.profile.name}'s top skills:**\n\n` +
+    c.skills.items.map(s => `* **${s.name}** (${s.level}) — ${s.desc}`).join("\n") +
+    `\n\nFeel free to explore the Skills section on this website for more details!`;
+
+  const projects = `Here are **${c.profile.name}'s featured projects:**\n\n` +
+    c.projects.map(p => `* **${p.title}** — ${p.shortDesc} Tech: ${p.techStack.join(", ")}.`).join("\n") +
+    `\n\nYou can view detailed project cards in the Projects section!`;
+
+  const education = `Here is **${c.profile.name}'s educational background:**\n\n` +
+    c.education.map(e => `* **${e.degree}** ${e.specialization ? `(${e.specialization})` : ""} — ${e.institution} (${e.duration}) — ${e.cgpa}`).join("\n");
+
+  const contact = `You can reach **${c.profile.name}** through:\n\n` +
+    `* **Email:** ${c.profile.email}\n` +
+    `* **Phone:** ${c.profile.phone}\n` +
+    `* **GitHub:** [GitHub](https://github.com/${c.usernames.github})\n` +
+    `* **LinkedIn:** [LinkedIn](https://linkedin.com/in/${c.usernames.linkedin})\n\n` +
+    `Feel free to use the Contact form on this website as well!`;
+
+  const resume = `Sure! You can access ${c.profile.name}'s resume here:\n\n[Resume](${c.profile.resumeUrl})\n\nClick above to open or download it directly.`;
+
+  const experience = `Here is **${c.profile.name}'s professional experience:**\n\n` +
+    c.experiences.map(e => `* **${e.role}** — ${e.company} (${e.duration}) — ${e.achievements[0]}`).join("\n");
+
+  const achievement = `Here are **${c.profile.name}'s key achievements:**\n\n` +
+    c.achievements.map(a => `* **${a.title}** — ${a.issuer} (${a.date}) — ${a.desc}`).join("\n");
+
+  const certification = `Here are **${c.profile.name}'s certifications:**\n\n` +
+    c.certifications.map(cert => `* **${cert.title}** — ${cert.issuer} (${cert.date})`).join("\n");
+
+  const leadership = `Here are **${c.profile.name}'s leadership roles:**\n\n` +
+    c.leadership.map(l => `* **${l.position}** — ${l.organization} (${l.duration}) — ${l.details[0]}`).join("\n");
+
+  const defaultMsg = `Thank you for your interest! I'm **Nexus AI**, ${c.profile.name}'s digital assistant.\n\n` +
+    `${c.profile.bio}\n\n` +
+    `I can help you learn about ${c.profile.name}'s **skills**, **projects**, **education**, **experience**, **achievements**, or **contact information**.\n\n` +
+    `* **GitHub:** [GitHub](https://github.com/${c.usernames.github})\n` +
+    `* **LinkedIn:** [LinkedIn](https://linkedin.com/in/${c.usernames.linkedin})`;
+
+  return { skills, projects, education, contact, resume, experience, achievement, certification, leadership, default: defaultMsg };
+}
+
+const FALLBACK_RESPONSES = buildFallbacks();
+
+function getFallbackResponse(userMessage: string): string {
+  const msg = userMessage.toLowerCase();
+  if (msg.includes("skill") || msg.includes("tech") || msg.includes("language")) return FALLBACK_RESPONSES.skills;
+  if (msg.includes("project") || msg.includes("built")) return FALLBACK_RESPONSES.projects;
+  if (msg.includes("educat") || msg.includes("study") || msg.includes("college") || msg.includes("degree") || msg.includes("school")) return FALLBACK_RESPONSES.education;
+  if (msg.includes("contact") || msg.includes("email") || msg.includes("phone") || msg.includes("reach") || msg.includes("github") || msg.includes("linkedin")) return FALLBACK_RESPONSES.contact;
+  if (msg.includes("resume") || msg.includes("cv") || msg.includes("download")) return FALLBACK_RESPONSES.resume;
+  if (msg.includes("experience") || msg.includes("work") || msg.includes("intern") || msg.includes("job")) return FALLBACK_RESPONSES.experience;
+  if (msg.includes("achieve") || msg.includes("award") || msg.includes("hackathon") || msg.includes("winner")) return FALLBACK_RESPONSES.achievement;
+  if (msg.includes("certif") || msg.includes("course")) return FALLBACK_RESPONSES.certification;
+  if (msg.includes("leader") || msg.includes("club") || msg.includes("vice") || msg.includes("president")) return FALLBACK_RESPONSES.leadership;
+  return FALLBACK_RESPONSES.default;
+}
+
 export async function POST(req: Request) {
   try {
     const { messages } = await req.json();
@@ -38,10 +99,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ text });
 
   } catch (error: any) {
-    console.error("Chat API Error:", error);
-    return NextResponse.json(
-      { error: error.message || "Failed to process chat request." },
-      { status: 500 }
-    );
+    console.warn("Chat API Error — serving fallback response:", error.message);
+    
+    // Extract the last user message to match a fallback
+    const { messages } = await req.clone().json().catch(() => ({ messages: [] }));
+    const lastUserMsg = messages?.filter((m: any) => m.role === "user").pop()?.content || "";
+    const fallback = getFallbackResponse(lastUserMsg);
+
+    return NextResponse.json({ text: fallback });
   }
 }
