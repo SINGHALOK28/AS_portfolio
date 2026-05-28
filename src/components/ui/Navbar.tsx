@@ -128,7 +128,7 @@ export default function Navbar() {
             : "bg-transparent border-b border-transparent"
         )}
       >
-        <div className="max-w-[1400px] mx-auto px-4 h-16 flex items-center justify-between gap-4">
+        <div className="max-w-[1400px] mx-auto px-4 min-h-[4rem] py-2 flex items-center justify-between gap-4">
           
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center select-none">
@@ -143,8 +143,8 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Navigation Links — Centered, spaced, visible ONLY on Desktop */}
-          <nav className="hidden xl:flex flex-1 items-center justify-center space-x-1 py-2 overflow-hidden">
+          {/* Navigation Links — Centered, wrapping seamlessly on smaller PCs */}
+          <nav className="hidden lg:flex flex-1 items-center justify-center gap-1.5 flex-wrap">
             {NAV_ITEMS.map((item) => {
               const isActive = activeSection === item.id;
               return (
