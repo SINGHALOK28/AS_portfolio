@@ -71,8 +71,10 @@ function getFallbackResponse(userMessage: string): string {
 }
 
 export async function POST(req: Request) {
+  let parsedMessages: any[] = [];
   try {
     const { messages } = await req.json();
+    parsedMessages = messages;
 
     const systemPrompt = `
       You are Nexus AI, a highly intelligent and professional AI assistant designed to represent Alok Singh.
@@ -92,7 +94,7 @@ export async function POST(req: Request) {
 
     const { text } = await generateText({
       model: google("gemini-2.0-flash"),
-      messages,
+      messages: parsedMessages,
       system: systemPrompt,
     });
 
@@ -102,8 +104,7 @@ export async function POST(req: Request) {
     console.warn("Chat API Error — serving fallback response:", error.message);
     
     // Extract the last user message to match a fallback
-    const { messages } = await req.clone().json().catch(() => ({ messages: [] }));
-    const lastUserMsg = messages?.filter((m: any) => m.role === "user").pop()?.content || "";
+    const lastUserMsg = parsedMessages?.filter((m: any) => m.role === "user").pop()?.content || "";
     const fallback = getFallbackResponse(lastUserMsg);
 
     return NextResponse.json({ text: fallback });

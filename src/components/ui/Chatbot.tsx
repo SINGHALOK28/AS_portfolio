@@ -157,7 +157,7 @@ export default function Chatbot() {
       
       if (!line.trim()) return <div key={i} className="h-2" />;
 
-      return <p key={i} className="mt-1">{formattedLine}</p>;
+      return <div key={i} className="mt-1">{formattedLine}</div>;
     });
   };
 

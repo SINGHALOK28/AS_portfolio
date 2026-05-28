@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePortfolioConfig } from "@/context/PortfolioConfigContext";
 import { playClickSound } from "@/utils/soundManager";
-import { Menu, X, Palette } from "lucide-react";
+import { Palette, Menu, X } from "lucide-react";
 import { cn } from "@/utils/cn";
 
 const NAV_ITEMS = [
@@ -20,18 +20,6 @@ const NAV_ITEMS = [
   { id: "contact", label: "Contact" }
 ];
 
-/**
- * Navbar Component
- * 
- * WHY THIS CODE EXISTS:
- * This component provides the primary navigation for the portfolio, sticking to the top of the viewport.
- * It ensures users can jump between sections, toggle UI sound effects, and switch the global color theme.
- * 
- * WHAT IT DOES:
- * 1. Tracks the `scrolled` state to transition its background from transparent to a frosted glassmorphism effect when the user scrolls down.
- * 2. Renders a mobile-responsive menu (hamburger icon) and desktop navigation links.
- * 3. Integrates the `usePortfolioConfig` hook to dynamically change the global CSS theme (`emerald`, `diamond`, `redstone`, etc.) when the Palette icon is clicked.
- */
 export default function Navbar() {
   const { config, theme, setTheme } = usePortfolioConfig();
   const [activeSection, setActiveSection] = useState("about");
@@ -51,15 +39,12 @@ export default function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      
-      // Determine background opacity based on scroll
       if (currentScrollY > 50) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
       }
     };
-
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -68,7 +53,7 @@ export default function Navbar() {
   useEffect(() => {
     const observerOptions = {
       root: null,
-      rootMargin: "-25% 0px -65% 0px", // Focus middle viewport
+      rootMargin: "-25% 0px -65% 0px",
       threshold: 0
     };
 
@@ -81,7 +66,6 @@ export default function Navbar() {
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
-
     NAV_ITEMS.forEach((item) => {
       const el = document.getElementById(item.id);
       if (el) observer.observe(el);
@@ -116,13 +100,12 @@ export default function Navbar() {
     playClickSound();
     setMobileMenuOpen(false);
     
-    // Defer the scroll slightly to allow the mobile menu's scroll-lock (Lenis.stop) to release first
+    // Defer the scroll slightly
     setTimeout(() => {
       const SCROLL_OFFSET = -80;
       const lenis = (window as any).lenis;
       
       if (lenis) {
-        // Ensure lenis is awake if it was just stopped by the mobile menu
         lenis.start();
         lenis.scrollTo(`#${id}`, { offset: SCROLL_OFFSET });
       } else {
@@ -135,8 +118,6 @@ export default function Navbar() {
     }, 50);
   };
 
-
-
   return (
     <>
       <header
@@ -147,10 +128,10 @@ export default function Navbar() {
             : "bg-transparent border-b border-transparent"
         )}
       >
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="max-w-[1400px] mx-auto px-4 h-16 flex items-center justify-between gap-4">
           
-          {/* Logo & Status HUD */}
-          <div className="flex items-center space-x-4 select-none">
+          {/* Logo */}
+          <div className="flex-shrink-0 flex items-center select-none">
             <div 
               onClick={() => handleNavClick("hero")}
               className="font-pixel text-sm text-emerald hover:text-cyan-glow transition-colors cursor-pointer flex items-center gap-1.5"
@@ -160,12 +141,10 @@ export default function Navbar() {
                 {config.profile.name.split(" ").map(n => n[0]).join("").toUpperCase()}
               </span>
             </div>
-            
-
           </div>
 
-          {/* Desktop Navigation Links — visible only at xl+ */}
-          <nav className="hidden xl:flex items-center space-x-0.5">
+          {/* Navigation Links — Centered, spaced, visible ONLY on Desktop */}
+          <nav className="hidden xl:flex flex-1 items-center justify-center space-x-1 py-2 overflow-hidden">
             {NAV_ITEMS.map((item) => {
               const isActive = activeSection === item.id;
               return (
@@ -173,7 +152,7 @@ export default function Navbar() {
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
                   className={cn(
-                    "px-1.5 py-1.5 font-pixel text-[9px] font-bold uppercase tracking-wide transition-all duration-200 border rounded-md relative select-none whitespace-nowrap",
+                    "flex-shrink-0 px-1.5 py-1.5 font-pixel text-[9px] font-bold uppercase tracking-wide transition-all duration-200 border rounded-md relative select-none whitespace-nowrap",
                     isActive
                       ? "bg-emerald/10 border-emerald text-emerald shadow-[0_0_8px_rgba(80,200,120,0.15)]"
                       : "bg-transparent border-transparent text-gray-400 hover:text-gray-200 hover:border-[#232f32]"
@@ -188,21 +167,22 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Sound Control + Hamburger */}
-          <div className="flex items-center space-x-3">
+          {/* Controls: Theme Toggle & Hamburger Menu */}
+          <div className="flex-shrink-0 flex items-center space-x-2.5">
             {/* Theme Toggle Button */}
             <button
               onClick={handleThemeToggle}
-              className="p-2 rounded-lg border border-[#232f32] bg-[#0c1214] transition-colors select-none text-emerald hover:text-cyan-glow border-emerald/40 hover:bg-emerald/5"
+              className="p-2.5 rounded-lg border border-[#232f32] bg-[#0c1214] transition-colors select-none text-emerald hover:text-cyan-glow border-emerald/40 hover:bg-emerald/5"
               title="Toggle Color Theme"
             >
               <Palette className="w-4 h-4" />
             </button>
-
-            {/* Mobile Menu Toggle Button — shown when desktop nav is hidden */}
+            
+            {/* Hamburger Menu Toggle — Visible ONLY on mobile */}
             <button
               onClick={() => { playClickSound(); setMobileMenuOpen(!mobileMenuOpen); }}
-              className="xl:hidden p-2 rounded-lg border border-[#232f32] bg-[#0c1214] text-gray-400 hover:text-white"
+              className="xl:hidden p-2.5 rounded-lg border border-[#232f32] bg-[#0c1214] text-gray-400 hover:text-white transition-colors"
+              title="Toggle Menu Drawer"
             >
               {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
             </button>
@@ -219,7 +199,7 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             data-lenis-prevent="true"
-            className="fixed inset-0 z-30 bg-black/90 backdrop-blur-md xl:hidden flex flex-col pt-24 pb-12 px-8 overflow-y-auto"
+            className="fixed inset-0 z-30 bg-black/90 backdrop-blur-md flex flex-col pt-24 pb-12 px-8 overflow-y-auto"
           >
             <nav className="flex flex-col space-y-4 max-w-sm mx-auto w-full">
               <span className="font-pixel text-[9px] text-gray-500 uppercase tracking-widest border-b border-[#232f32] pb-2 mb-2">
