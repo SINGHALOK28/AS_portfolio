@@ -62,19 +62,19 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             parsed.experiences = USER_CONFIG.experiences;
             parsed.profile = USER_CONFIG.profile;
             
-            // Sync new demoImage fields into stale cache safely, and filter out deleted projects
+            // Merge source projects into stale cache so newly added projects appear automatically
             if (parsed.projects) {
-              parsed.projects = parsed.projects
-                .filter((p: any) => USER_CONFIG.projects.some(sp => sp.id === p.id))
-                .map((p: any) => {
-                  const sourceProj = USER_CONFIG.projects.find(sp => sp.id === p.id);
-                  return { 
-                    ...p, 
-                    demoImage: sourceProj?.demoImage || p.demoImage,
-                    github: sourceProj?.github || p.github,
-                    demo: sourceProj?.demo || p.demo
-                  };
-                });
+              const storedProjects = Array.isArray(parsed.projects) ? parsed.projects : [];
+              parsed.projects = USER_CONFIG.projects.map((sourceProj: any) => {
+                const savedProj = storedProjects.find((p: any) => p.id === sourceProj.id);
+                return {
+                  ...sourceProj,
+                  ...(savedProj || {}),
+                  demoImage: sourceProj.demoImage || savedProj?.demoImage,
+                  github: sourceProj.github || savedProj?.github,
+                  demo: sourceProj.demo || savedProj?.demo
+                };
+              });
             }
 
             setConfig(parsed);

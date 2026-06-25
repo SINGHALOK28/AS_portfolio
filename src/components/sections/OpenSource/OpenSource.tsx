@@ -7,31 +7,31 @@ import { Star, GitFork, ArrowUpRight } from "lucide-react";
 import { Github } from "@/components/ui/Icons";
 import { playClickSound } from "@/utils/soundManager";
 
-// Mock pinned repository data
+// Pinned repository data aligned with the current portfolio resume
 const PINNED_REPOS = [
   {
-    name: "data-voxel-visualizer",
-    desc: "WebGL-based 3D grid engine rendering multidimensional statistical arrays as interactive voxel environments.",
+    name: "spotify-analytics-platform",
+    desc: "Interactive analytics platform for exploring Spotify listening trends and personalized insights.",
     lang: "TypeScript",
     langColor: "#3178c6",
-    stars: 84,
-    forks: 12
+    stars: 8,
+    forks: 2
   },
   {
-    name: "mlops-pipeline-orchestrator",
-    desc: "A lightweight DAG workflow runner for organizing, tracking, and executing Scikit-learn and PyTorch model runs.",
+    name: "AI-Resume-Screening-Skill-Gap-Analyzer",
+    desc: "NLP-powered resume parser that extracts skills and scores candidates using semantic similarity.",
     lang: "Python",
     langColor: "#3572A5",
-    stars: 32,
-    forks: 4
+    stars: 12,
+    forks: 3
   },
   {
-    name: "pandas-stream-analyzer",
-    desc: "Fast sliding-window data aggregator for computing rolling statistical metrics over high-velocity tabular logs.",
-    lang: "C++",
-    langColor: "#f34b7d",
-    stars: 48,
-    forks: 7
+    name: "Intelligent-Surveillance-Hub",
+    desc: "Browser-based OSINT assistant for threat detection, entity highlighting, and risk classification.",
+    lang: "JavaScript",
+    langColor: "#f0db4f",
+    stars: 7,
+    forks: 1
   }
 ];
 

@@ -192,15 +192,16 @@ export const USER_CONFIG = {
       techs: ["Tableau", "Excel", "Data Analysis", "Forensics"]
     },
     {
-      role: "Project Co-Developer & Team Member",
-      company: "PES College of Engineering, Mandya",
+      role: "AI/ML & Full-Stack Developer",
+      company: "Independent Projects & PES College of Engineering",
       duration: "2023 - 2026",
       achievements: [
-        "Architected full-stack civic action platform 'Jan Saathi' incorporating Vertex AI classification and Google Maps API.",
-        "Built Chrome extensions mapping OSINT defense data and computing threat classification levels in real-time.",
-        "Configured custom sentence-transformer pipelines running on Streamlit instances to parse and evaluate resume profiles."
+        "Built Jan Saathi, a civic issue reporting platform with role-based portals, Google Maps routing, and Vertex AI classification.",
+        "Developed an AI resume screening system that parses resumes, extracts skills, and scores candidates using NLP embeddings.",
+        "Created an Intelligent Surveillance Hub for real-time OSINT threat analysis and browser-based risk detection.",
+        "Implemented a Spotify analytics platform with interactive dashboards and listening insights."
       ],
-      techs: ["Python", "JS", "Django REST", "React.js", "Azure DevOps"]
+      techs: ["Python", "React.js", "Django REST", "NLP", "Chrome Extension", "Vertex AI"]
     }
   ],
 
@@ -212,8 +213,8 @@ export const USER_CONFIG = {
       shortDesc: "A civic action portal with automated Vertex AI classification and Google Maps API routing.",
       longDesc: "Jan Saathi is a full-stack civic issue reporting system built to bridge public communication. Includes role-based portals (Citizen, Contractor, Admin) with secure JWT tokens. Integrates Google Maps APIs and Google Vertex AI image classification to automatically identify report types, tag locations, and optimize priority routing lists.",
       techStack: ["React.js", "Django REST", "MongoDB", "Vertex AI", "Google Maps API"],
-      github: "https://github.com/alok-singh",
-      demo: "https://github.com/alok-singh",
+      github: "",
+      demo: "https://drive.google.com/file/d/1EUTmtVqzEnwQ9j7d847GlRKbMN78Co0Z/view",
       demoImage: "/projects/jansaathi.png",
       featured: true,
       status: "Production Ready",
@@ -230,7 +231,7 @@ export const USER_CONFIG = {
       longDesc: "A semantic parsing utility that extracts over 200+ specialized tech skills from PDF/DOCX resumes. Utilizes spaCy, NLTK tokenizers, and sentence-transformers (all-MiniLM-L6-v2) to compute cosine similarity scores, delivering 35% higher precision than classic keyword matching algorithms.",
       techStack: ["Python", "Streamlit", "Sentence Transformers", "spaCy", "NLTK"],
       github: "https://github.com/SINGHALOK28/AI-Resume-Screening-Skill-Gap-Analyzer",
-      demo: "https://github.com/SINGHALOK28/AI-Resume-Screening-Skill-Gap-Analyzer",
+      demo: "https://ai-resume-screening-skill-gap-analyzer.onrender.com/",
       demoImage: "/projects/resume_nlp.png",
       featured: true,
       status: "Stable v1.0",
@@ -240,14 +241,46 @@ export const USER_CONFIG = {
       architectureUrl: "/architecture_nlp.png"
     },
     {
+      id: "spotify-analytics",
+      title: "Spotify Analytics & Popularity Prediction Platform",
+      category: "Data Analytics & Full-Stack",
+      shortDesc: "A data-intensive analytics platform for music insights, recommendations, and popularity forecasting over 100K+ tracks.",
+      longDesc: "Engineered a full-stack music analytics platform managing 100K+ music records with 10+ REST APIs for search, recommendations, machine learning inference, and authentication. Built Apache Airflow DAGs to automate ETL pipelines for extraction, transformation, validation, and PostgreSQL loading, reducing manual processing by over 90%. Implemented ML-based popularity forecasting using Random Forest and XGBoost along with a cosine similarity recommendation engine for real-time comparisons across 100K+ tracks.",
+      techStack: ["FastAPI", "React.js", "PostgreSQL", "Apache Airflow", "Scikit-learn", "Docker", "SQLAlchemy", "JWT"],
+      github: "https://github.com/SINGHALOK28/spotify-analytics-platform",
+      demo: "https://spotify-analytics-platform.vercel.app",
+      demoImage: "/projects/spotify-analytics.svg",
+      featured: true,
+      status: "Live v1.0",
+      metrics: { recordsManaged: "100K+", apiEndpoints: "10+", automationGain: "90%+" },
+      challenges: "Designing scalable ETL automation and real-time recommendation workflows while maintaining performance across large-scale music datasets.",
+      learnings: "Combining containerized deployment, workflow orchestration, and ML inference into a reliable end-to-end analytics stack."
+    },
+    {
+      id: "portfolio-website",
+      title: "Personal Portfolio Website",
+      category: "Web Apps",
+      shortDesc: "A dynamic portfolio site showcasing projects, achievements, stats, and contact information in a futuristic UI.",
+      longDesc: "This portfolio was built as a polished personal brand website to present my work, technical skills, projects, and experience in a modern interactive experience. It combines animated sections, a configurable content system, and a lightweight chat assistant for visitor interaction.",
+      techStack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "React"],
+      github: "https://github.com/SINGHALOK28/portfolio",
+      demo: "/",
+      demoImage: "/projects/portfolio-website.svg",
+      featured: true,
+      status: "Live Portfolio",
+      metrics: { sections: "12+", interactions: "Animated UI", visitorExperience: "Immersive" },
+      challenges: "Designing a cohesive, high-performance experience across animated sections while keeping the content easy to update.",
+      learnings: "Creating a centralized configuration model that makes portfolio content updates simple and maintainable."
+    },
+    {
       id: "defence-osint",
-      title: "Defence OSINT Intelligence Assistant",
+      title: "Intelligent Surveillance Hub",
       category: "Web Security Utilities",
       shortDesc: "Real-time threat level extension detecting entities and highlighting risks.",
       longDesc: "A modular Chrome extension designed to scan live web content, isolating defense-related terminology (countries, military assets, agencies). Uses a custom threat weighting engine to highlight threat indicators and categorize sites (LOW/MEDIUM/HIGH) with negligible browser impact.",
       techStack: ["JS", "Chrome Extension APIs", "NLP Analytics", "Threat Weighting"],
-      github: "https://github.com/SINGHALOK28/defence-osint-extension",
-      demo: "https://github.com/SINGHALOK28/defence-osint-extension",
+      github: "https://github.com/SINGHALOK28/Intelligent-Surveillance-Hub",
+      demo: "https://github.com/SINGHALOK28/Intelligent-Surveillance-Hub",
       demoImage: "/projects/osint.png",
       featured: true,
       status: "Beta v0.8",

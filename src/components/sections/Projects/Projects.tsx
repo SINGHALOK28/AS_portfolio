@@ -187,7 +187,7 @@ export default function Projects() {
 
                 <div className="flex items-center space-x-2 relative z-20">
                   <a 
-                    href="/404" 
+                    href={proj.demo || "/404"} 
                     target="_blank" 
                     rel="noreferrer"
                     onClick={(e) => { 
@@ -200,19 +200,21 @@ export default function Projects() {
                     <ExternalLink className="w-3.5 h-3.5" />
                     <span className="font-pixel text-[8px] uppercase tracking-wider hidden xl:inline">DEMO</span>
                   </a>
-                  <a 
-                    href={proj.github || `https://github.com/${config.usernames.github}`} 
-                    target="_blank" 
-                    rel="noreferrer"
-                    onClick={(e) => { 
-                      e.stopPropagation(); 
-                      playClickSound(); 
-                    }}
-                    className="p-1 bg-black/40 border border-cyan-glow/20 text-gray-400 hover:text-cyan-glow hover:border-cyan-glow/40 rounded transition-colors"
-                    title="Source Code"
-                  >
-                    <Github className="w-3.5 h-3.5" />
-                  </a>
+                  {proj.github ? (
+                    <a 
+                      href={proj.github} 
+                      target="_blank" 
+                      rel="noreferrer"
+                      onClick={(e) => { 
+                        e.stopPropagation(); 
+                        playClickSound(); 
+                      }}
+                      className="p-1 bg-black/40 border border-cyan-glow/20 text-gray-400 hover:text-cyan-glow hover:border-cyan-glow/40 rounded transition-colors"
+                      title="Source Code"
+                    >
+                      <Github className="w-3.5 h-3.5" />
+                    </a>
+                  ) : null}
                   <button className="flex items-center space-x-1 font-pixel text-[8px] text-cyan-glow uppercase tracking-wider group-hover:translate-x-1 transition-transform ml-1">
                     <Eye className="w-3.5 h-3.5" />
                     <span className="hidden sm:inline">INSPECT</span>
@@ -320,7 +322,7 @@ export default function Projects() {
                 {/* Footer action buttons */}
                 <div className="p-6 bg-[#070b0c] border-t border-cyan-glow/10 flex justify-end items-center gap-4 flex-wrap relative z-20">
                   <a
-                    href="/404"
+                    href={selectedProject.demo || "/404"}
                     target="_blank"
                     rel="noreferrer"
                     onClick={(e) => { e.stopPropagation(); playClickSound(); }}
@@ -353,16 +355,18 @@ export default function Projects() {
                       <span>CERTIFICATE</span>
                     </a>
                   )}
-                  <a
-                    href={selectedProject.github || `https://github.com/${config.usernames.github}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={(e) => { e.stopPropagation(); playClickSound(); }}
-                    className="relative z-50 inline-flex items-center space-x-2 px-5 py-2.5 border border-cyan-glow/40 hover:border-cyan-glow hover:bg-cyan-glow/10 font-mono text-sm font-semibold tracking-wider text-cyan-glow transition-colors rounded-lg cursor-pointer"
-                  >
-                    <Github className="w-4 h-4" />
-                    <span>SOURCE_CODE</span>
-                  </a>
+                  {selectedProject.github ? (
+                    <a
+                      href={selectedProject.github}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={(e) => { e.stopPropagation(); playClickSound(); }}
+                      className="relative z-50 inline-flex items-center space-x-2 px-5 py-2.5 border border-cyan-glow/40 hover:border-cyan-glow hover:bg-cyan-glow/10 font-mono text-sm font-semibold tracking-wider text-cyan-glow transition-colors rounded-lg cursor-pointer"
+                    >
+                      <Github className="w-4 h-4" />
+                      <span>SOURCE_CODE</span>
+                    </a>
+                  ) : null}
                 </div>
               </motion.div>
             </div>
