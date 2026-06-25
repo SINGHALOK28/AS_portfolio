@@ -24,7 +24,7 @@ export const USER_CONFIG = {
     ],
     avatarUrl: "/avatar.png",
     bio: "Aspiring developer with experience in building end-to-end web applications using Python, SQL, and Django. Skilled in backend development, database design, and integrating application logic with user-facing components. Interested in scalable applications and applying AI/ML concepts to real-world problems.",
-    resumeUrl: "/aloksinghaiml.pdf",
+    resumeUrl: "/alok_singh_resume.pdf",
     email: "aloksinghchas01@gmail.com",
     phone: "+91 6207698566",
   },
@@ -62,14 +62,14 @@ export const USER_CONFIG = {
       maxRating: 1280,
       rank: "Newbie",
       maxRank: "Newbie",
-      solvedCount: 86,
+      solvedCount: 26,
       contestsCount: 14
     },
     codechef: {
       rating: 1420,
-      stars: "2★",
-      globalRank: 12450,
-      countryRank: 4200,
+      stars: "1★",
+      globalRank: 124500,
+      countryRank: 42000,
       solvedCount: 54
     },
     geeksforgeeks: {
