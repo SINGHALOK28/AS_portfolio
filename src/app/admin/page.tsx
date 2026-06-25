@@ -38,6 +38,11 @@ export default function AdminPage() {
   const [editConfig, setEditConfig] = useState<EditableConfig | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [toastType, setToastType] = useState<"success" | "info" | "error">("success");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loginUsername, setLoginUsername] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [authError, setAuthError] = useState("");
+  const adminCredentials = { username: "admin", password: "portfolio2026" };
 
   // Load configuration into local editing state once loaded
   useEffect(() => {
@@ -45,6 +50,15 @@ export default function AdminPage() {
       setEditConfig(JSON.parse(JSON.stringify(config)));
     }
   }, [isLoaded, config]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedAuth = window.localStorage.getItem("portfolio_admin_auth");
+      if (storedAuth === "true") {
+        setIsAuthenticated(true);
+      }
+    }
+  }, []);
 
   const triggerToast = (msg: string, type: "success" | "info" | "error" = "success") => {
     setToastMessage(msg);
@@ -54,6 +68,32 @@ export default function AdminPage() {
     }, 4000);
   };
 
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (
+      loginUsername.trim().toLowerCase() === adminCredentials.username &&
+      loginPassword === adminCredentials.password
+    ) {
+      setIsAuthenticated(true);
+      setAuthError("");
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem("portfolio_admin_auth", "true");
+      }
+    } else {
+      setAuthError("Invalid username or password.");
+    }
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setLoginUsername("");
+    setLoginPassword("");
+    setAuthError("");
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem("portfolio_admin_auth");
+    }
+  };
+
   if (!isLoaded || !editConfig) {
     return (
       <div className="min-h-screen bg-[#070b0c] text-white flex flex-col items-center justify-center font-mono">
@@ -61,6 +101,54 @@ export default function AdminPage() {
         <p className="text-sm uppercase tracking-wider text-emerald animate-pulse">
           Hydrating Voxel Config Memory...
         </p>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-[#070b0c] text-white flex items-center justify-center px-4 font-mono">
+        <div className="w-full max-w-md rounded-2xl border border-emerald/20 bg-[#090e0f]/95 p-8 shadow-[0_0_40px_rgba(41,243,195,0.15)]">
+          <div className="mb-6">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-emerald mb-2">ADMIN ACCESS</p>
+            <h1 className="text-2xl font-bold text-white">Portfolio Control Center</h1>
+            <p className="mt-2 text-sm text-gray-400">Use the credentials below to continue.</p>
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <label className="mb-2 block text-xs uppercase tracking-wider text-gray-500">Username</label>
+              <input
+                type="text"
+                value={loginUsername}
+                onChange={(e) => setLoginUsername(e.target.value)}
+                className="w-full rounded-lg border border-emerald/20 bg-black/40 px-3 py-2 text-sm text-white outline-none focus:border-emerald"
+                placeholder="admin"
+              />
+            </div>
+            <div>
+              <label className="mb-2 block text-xs uppercase tracking-wider text-gray-500">Password</label>
+              <input
+                type="password"
+                value={loginPassword}
+                onChange={(e) => setLoginPassword(e.target.value)}
+                className="w-full rounded-lg border border-emerald/20 bg-black/40 px-3 py-2 text-sm text-white outline-none focus:border-emerald"
+                placeholder="portfolio2026"
+              />
+            </div>
+            {authError ? <p className="text-sm text-red-400">{authError}</p> : null}
+            <button
+              type="submit"
+              className="w-full rounded-lg bg-emerald px-4 py-2 text-sm font-semibold text-black transition hover:bg-emerald/90"
+            >
+              Enter Admin Panel
+            </button>
+          </form>
+
+          <div className="mt-6 rounded-lg border border-emerald/10 bg-black/20 p-3 text-xs text-gray-400">
+            <p>Default credentials: <span className="font-semibold text-emerald">admin</span> / <span className="font-semibold text-emerald">portfolio2026</span></p>
+          </div>
+        </div>
       </div>
     );
   }
@@ -178,6 +266,12 @@ export const USER_CONFIG = ${JSON.stringify(editConfig, null, 2)};
           >
             <RefreshCw className="w-3.5 h-3.5" />
             <span>RESET</span>
+          </button>
+          <button
+            onClick={handleLogout}
+            className="px-4 py-2 border border-gray-800 hover:border-white rounded-lg text-xs font-mono transition-colors"
+          >
+            LOGOUT
           </button>
           <button
             onClick={handleSave}
